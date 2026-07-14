@@ -441,7 +441,7 @@ function buildWhatsAppOrderText({ nameText, phoneText, setText, people, dateText
     section("Өшірілген сусындар", formatRemovedCollectionForPdf(removedDrinks, "шт")),
     "",
     `Толық бағасы: ${totalText}`,
-    "Тапсырыс кемінде 1 күн алдын қабылданатынын білемін.",
+    "Жоғарыдағы тапсырыстарға толықтай келісемін.",
   ].join("\n");
 }
 

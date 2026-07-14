@@ -1244,9 +1244,30 @@ h3 {
 }
 
 @media (max-width: 620px) {
+  body {
+    overflow-x: hidden;
+  }
+
   .topbar {
     align-items: flex-start;
     flex-direction: column;
+    gap: 12px;
+    padding: 14px 18px;
+  }
+
+  .brand {
+    align-items: flex-start;
+  }
+
+  .brand span:last-child {
+    max-width: 260px;
+  }
+
+  .nav {
+    width: 100%;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 16px;
   }
 
   .hero {
@@ -1264,7 +1285,56 @@ h3 {
 
   .section,
   .order {
+    width: min(100% - 20px, 1180px);
     margin: 64px auto;
+  }
+
+  .order {
+    gap: 18px;
+    padding: 14px;
+    border-radius: 16px;
+  }
+
+  .order::after {
+    display: none;
+  }
+
+  .order > div:first-child {
+    padding: 10px 6px 0;
+  }
+
+  .order-copy {
+    font-size: 15px;
+  }
+
+  .order-points {
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .order-points span {
+    padding: 7px 9px;
+    font-size: 13px;
+  }
+
+  .order-box {
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .order-select select,
+  .order-details input,
+  .order-details select {
+    min-height: 56px;
+    font-size: 16px;
+  }
+
+  .order-select select,
+  .order-details select,
+  .salad-form select {
+    background-position:
+      calc(100% - 22px) 50%,
+      calc(100% - 16px) 50%;
   }
 
   .footer {
