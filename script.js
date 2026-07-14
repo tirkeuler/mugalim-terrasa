@@ -410,6 +410,10 @@ function formatRemovedCollectionForPdf(collection, defaultUnit = "дана") {
   return collection.map((item) => `${item.name}: өшірілді`).join("\n");
 }
 
+function formatWhatsAppValue(value) {
+  return value.startsWith("әлі ") ? `_*${value}*_` : value;
+}
+
 function buildWhatsAppOrderText({ nameText, phoneText, setText, people, dateText, timeText, venue, rentText, totalText }) {
   const section = (title, value) => `${title}:\n${value}`;
 
@@ -419,12 +423,12 @@ function buildWhatsAppOrderText({ nameText, phoneText, setText, people, dateText
     "Mugalim терраса дәмханасы",
     "Тапсырыс парағы",
     "",
-    `Клиент есімі: ${nameText}`,
-    `Телефон соңғы 4 саны: ${phoneText}`,
-    `Сет: ${setText}`,
+    `Клиент есімі: ${formatWhatsAppValue(nameText)}`,
+    `Телефон соңғы 4 саны: ${formatWhatsAppValue(phoneText)}`,
+    `Сет: ${formatWhatsAppValue(setText)}`,
     `Адам саны: ${people} адам`,
-    `Келетін күні: ${dateText}`,
-    `Келетін сағаты: ${timeText}`,
+    `Келетін күні: ${formatWhatsAppValue(dateText)}`,
+    `Келетін сағаты: ${formatWhatsAppValue(timeText)}`,
     `Отыратын орын: ${venue.name}`,
     `Аренда: ${rentText}`,
     "",

@@ -1329,6 +1329,28 @@ h3 {
     font-size: 16px;
   }
 
+  .order-details input[type="date"],
+  .order-details input[type="time"] {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    padding-right: 14px;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .order-details input[type="date"]::-webkit-date-and-time-value,
+  .order-details input[type="time"]::-webkit-date-and-time-value {
+    min-height: 1.4em;
+    text-align: left;
+  }
+
+  .order-details input[type="date"]::-webkit-calendar-picker-indicator,
+  .order-details input[type="time"]::-webkit-calendar-picker-indicator {
+    display: none;
+  }
+
   .order-select select,
   .order-details select,
   .salad-form select {
