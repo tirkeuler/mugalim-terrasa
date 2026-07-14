@@ -246,6 +246,19 @@ function getTomorrowDateValue() {
   return tomorrow.toISOString().slice(0, 10);
 }
 
+function formatDateInput(value) {
+  const digits = value.replace(/\D/g, "").slice(0, 8);
+  if (digits.length <= 2) return digits;
+  if (digits.length <= 4) return `${digits.slice(0, 2)}.${digits.slice(2)}`;
+  return `${digits.slice(0, 2)}.${digits.slice(2, 4)}.${digits.slice(4)}`;
+}
+
+function formatTimeInput(value) {
+  const digits = value.replace(/\D/g, "").slice(0, 4);
+  if (digits.length <= 2) return digits;
+  return `${digits.slice(0, 2)}:${digits.slice(2)}`;
+}
+
 function updateGroupSet() {
   const people = clampPeople(peopleCount.value);
   peopleCount.value = people;
@@ -1081,6 +1094,14 @@ orderPeople.addEventListener("input", () => {
   updateGroupSet();
 });
 orderPeople.addEventListener("change", updateGroupSet);
+orderDate.addEventListener("input", () => {
+  orderDate.value = formatDateInput(orderDate.value);
+  updateGroupSet();
+});
+orderTime.addEventListener("input", () => {
+  orderTime.value = formatTimeInput(orderTime.value);
+  updateGroupSet();
+});
 orderDate.addEventListener("change", updateGroupSet);
 orderTime.addEventListener("change", updateGroupSet);
 orderVenue.addEventListener("change", updateGroupSet);
