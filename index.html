@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="kk">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mugalim Терраса дәмханасы</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="Басты бет">
+        <span class="brand-mark">M</span>
+        <span>Mugalim Терраса дәмханасы</span>
+      </a>
+      <nav class="nav" aria-label="Бөлімдер">
+        <a href="#sets">Сеттер</a>
+        <a href="#menu">Тағамдар</a>
+        <a href="#order">Тапсырыс</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <img src="assets/dastarhan-hero.png" alt="Mugalim Терраса дәмханасының тағамдары" />
+        <div class="hero-shade"></div>
+        <div class="hero-content">
+          <p class="eyebrow">Дайын сеттер</p>
+          <h1 id="hero-title">Қазақы дәм сеттері</h1>
+          <p class="hero-copy">
+            Қазан кәуап, палау және манты сеттері. Тапсырыс кемінде 1 күн алдын қабылданады.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#sets">Сеттерді көру</a>
+            <a class="button ghost" href="tel:+77787783636">Қоңырау шалу</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="quick-panel" aria-label="Жылдам ақпарат">
+        <div>
+          <strong>1 күн алдын</strong>
+          <span>тапсырыс беру уақыты</span>
+        </div>
+        <div>
+          <strong>3 сет</strong>
+          <span>дайын ұсыныс</span>
+        </div>
+        <div>
+          <strong>3 дәм</strong>
+          <span>Қазан Кәуап, Палау, Манты</span>
+        </div>
+      </section>
+
+      <section class="section" id="sets">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Дайын сеттер</p>
+            <h2>Үш негізгі сет</h2>
+          </div>
+          <p class="notice">Барлық тапсырыс кемінде 1 күн бұрын беріледі. Бағалар теңгемен көрсетілген, адам саны тапсырыс кезінде нақтыланады.</p>
+        </div>
+
+        <div class="set-grid">
+          <article class="set-card accent">
+            <div class="set-top">
+              <span>Ет тағамы</span>
+            </div>
+            <h3>Қазан-кебап</h3>
+            <p>Қазан-кебап негізгі тағам ретінде беріледі, қосымша ас мәзірі төменде көрсетілген.</p>
+            <button type="button" data-name="Қазан-кебап" data-price="3 000 ₸">Тапсырыс беру</button>
+          </article>
+
+          <article class="set-card">
+            <div class="set-top">
+              <span>Классика</span>
+            </div>
+            <h3>Плов</h3>
+            <p>Плов порциямен ұсынылады, қосымша тағамдар мен салаттар бөлек таңдауға ыңғайлы.</p>
+            <button type="button" data-name="Плов" data-price="2 500 ₸">Тапсырыс беру</button>
+          </article>
+
+          <article class="set-card">
+            <div class="set-top">
+              <span>Бу тағамы</span>
+            </div>
+            <h3>Манты</h3>
+            <p>Манты дана бойынша есептеледі, тапсырыс көлемі адам санына қарай нақтыланады.</p>
+            <button type="button" data-name="Манты" data-price="450 ₸ / шт">Тапсырыс беру</button>
+          </article>
+        </div>
+
+        <div class="group-calculator" aria-labelledby="group-title">
+          <div class="calculator-copy">
+            <p class="eyebrow">Топпен келгенде</p>
+            <h3 id="group-title">Топтық сет есебі</h3>
+            <p>Адам санын енгізіңіз, сет құрамы автоматты есептеледі.</p>
+          </div>
+          <div class="calculator-controls">
+            <label class="people-control">
+              <span>Сет түрі</span>
+              <select id="set-type">
+                <option value="kebab">Қазан-кебап</option>
+                <option value="plov">Плов</option>
+                <option value="manty">Манты</option>
+              </select>
+            </label>
+            <label class="people-control">
+              <span>Адам саны</span>
+              <input id="people-count" type="number" min="1" max="120" value="12" inputmode="numeric" />
+            </label>
+          </div>
+          <div class="calc-grid" aria-live="polite">
+            <div class="calc-item">
+              <span>Қайнатпа сорпа</span>
+              <strong id="calc-soup">12 порция</strong>
+              <small>адам басына 1</small>
+            </div>
+            <div class="calc-item">
+              <span id="calc-main-name">Қазан-кебап</span>
+              <strong id="calc-main">12 порция</strong>
+              <small id="calc-main-rule">адам басына 1</small>
+            </div>
+            <div class="calc-item">
+              <span>Самса</span>
+              <strong id="calc-samsa">2 тарелка / 12 дана</strong>
+              <small>1 тарелкада 6 дана</small>
+              <div class="stepper" aria-label="Самса тарелка санын өзгерту">
+                <button type="button" data-adjust="samsa" data-delta="-1">-</button>
+                <button type="button" data-adjust="samsa" data-delta="1">+</button>
+              </div>
+            </div>
+            <div class="calc-item">
+              <span>Сусын</span>
+              <strong id="calc-drinks">3 топтама / 9 литр</strong>
+              <small>әр 4 адамға 1 топтама, 3 литр: кола, фанта, спрайт</small>
+            </div>
+            <div class="calc-item">
+              <span>Бауырсақ</span>
+              <strong id="calc-baursak">1 кг</strong>
+              <small>әр 12 адамға 1 кг</small>
+            </div>
+            <div class="calc-item">
+              <span>Салат</span>
+              <strong id="calc-salad">6 тарелка</strong>
+              <small>әр 2 адамға 1 тарелка</small>
+              <div class="stepper" aria-label="Салат тарелка санын өзгерту">
+                <button type="button" data-adjust="salad" data-delta="-1">-</button>
+                <button type="button" data-adjust="salad" data-delta="1">+</button>
+              </div>
+            </div>
+          </div>
+          <div class="salad-editor">
+            <div>
+              <span>Сет ішіндегі тағамдар</span>
+              <ul id="food-list"></ul>
+            </div>
+            <form id="food-form" class="salad-form">
+              <label for="food-menu">Сетке тағам қосу</label>
+              <div>
+                <select id="food-menu"></select>
+                <button type="submit">Таңдау</button>
+              </div>
+              <p id="food-notice" class="salad-notice" aria-live="polite"></p>
+            </form>
+            <div class="removed-salads">
+              <span>Сеттен алынған тағамдар</span>
+              <ul id="removed-food-list"></ul>
+            </div>
+          </div>
+          <div class="salad-editor">
+            <div>
+              <span>Салат түрлері</span>
+              <ul id="salad-list"></ul>
+            </div>
+            <form id="salad-form" class="salad-form">
+              <label for="salad-menu">Салат менюі</label>
+              <div>
+                <select id="salad-menu"></select>
+                <button type="submit">Таңдау</button>
+              </div>
+              <p id="salad-notice" class="salad-notice" aria-live="polite"></p>
+            </form>
+            <div class="removed-salads">
+              <span>Өшірілген салаттар</span>
+              <ul id="removed-salad-list"></ul>
+            </div>
+          </div>
+          <div class="salad-editor">
+            <div>
+              <span>Сусын түрлері</span>
+              <ul id="drink-list"></ul>
+            </div>
+            <form id="drink-form" class="salad-form">
+              <label for="drink-menu">Сусын менюі</label>
+              <div>
+                <select id="drink-menu"></select>
+                <button type="submit">Таңдау</button>
+              </div>
+              <p id="drink-notice" class="salad-notice" aria-live="polite"></p>
+            </form>
+            <div class="removed-salads">
+              <span>Өшірілген сусындар</span>
+              <ul id="removed-drink-list"></ul>
+            </div>
+          </div>
+          <div class="total-panel" aria-live="polite">
+            <div>
+              <span>Қазан-кебап</span>
+              <strong id="total-kebab">0 ₸</strong>
+            </div>
+            <div>
+              <span>Плов</span>
+              <strong id="total-plov">0 ₸</strong>
+            </div>
+            <div>
+              <span>Манты</span>
+              <strong id="total-manty">0 ₸</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section menu-section" id="menu">
+        <div class="menu-heading">
+          <p class="eyebrow">Тағам атаулары</p>
+          <h2>Мәзірдегі сеттер</h2>
+        </div>
+        <div class="menu-list">
+          <div>
+            <h3>Қазан-кебап сеті <span class="menu-summary" id="menu-kebab-summary">12 адам · 0 ₸</span></h3>
+            <dl class="price-list">
+              <div><dt>Қайнатпа сорпа (п)</dt><dd>1 700 ₸</dd></div>
+              <div><dt>Қазан-кебап</dt><dd>3 000 ₸</dd></div>
+              <div><dt>Самса (шт)</dt><dd>450 ₸</dd></div>
+              <div><dt>Нан</dt><dd>400 ₸</dd></div>
+              <div><dt>Бауырсақ 1 кг</dt><dd>1 200 ₸</dd></div>
+              <div><dt>Урбо - Салат хрустящие баклажаны</dt><dd>4 719 ₸</dd></div>
+              <div><dt>Урбо - Салат Греческий</dt><dd>3 289 ₸</dd></div>
+              <div><dt>Урбо - Салат Цезарь</dt><dd>3 509 ₸</dd></div>
+              <div><dt>Ачучук</dt><dd>1 900 ₸</dd></div>
+              <div><dt>Сусын (1 л)</dt><dd>1 000 ₸</dd></div>
+              <div><dt>Чай</dt><dd>1 500 ₸</dd></div>
+            </dl>
+          </div>
+          <div>
+            <h3>Плов сеті <span class="menu-summary" id="menu-plov-summary">12 адам · 0 ₸</span></h3>
+            <dl class="price-list">
+              <div><dt>Қайнатпа сорпа (п)</dt><dd>1 700 ₸</dd></div>
+              <div><dt>Плов (п)</dt><dd>2 500 ₸</dd></div>
+              <div><dt>Самса (шт)</dt><dd>450 ₸</dd></div>
+              <div><dt>Нан</dt><dd>400 ₸</dd></div>
+              <div><dt>Бауырсақ 1 кг</dt><dd>1 200 ₸</dd></div>
+              <div><dt>Урбо - Салат хрустящие баклажаны</dt><dd>4 719 ₸</dd></div>
+              <div><dt>Урбо - Салат Греческий</dt><dd>3 289 ₸</dd></div>
+              <div><dt>Урбо - Салат Цезарь</dt><dd>3 509 ₸</dd></div>
+              <div><dt>Ачучук</dt><dd>1 900 ₸</dd></div>
+              <div><dt>Сусын (1 л)</dt><dd>1 000 ₸</dd></div>
+              <div><dt>Чай</dt><dd>1 500 ₸</dd></div>
+            </dl>
+          </div>
+          <div>
+            <h3>Манты сеті <span class="menu-summary" id="menu-manty-summary">12 адам · 0 ₸</span></h3>
+            <dl class="price-list">
+              <div><dt>Қайнатпа сорпа (п)</dt><dd>1 700 ₸</dd></div>
+              <div><dt>Манты (шт)</dt><dd>450 ₸</dd></div>
+              <div><dt>Самса (шт)</dt><dd>450 ₸</dd></div>
+              <div><dt>Нан</dt><dd>400 ₸</dd></div>
+              <div><dt>Бауырсақ 1 кг</dt><dd>1 200 ₸</dd></div>
+              <div><dt>Урбо - Салат хрустящие баклажаны</dt><dd>4 719 ₸</dd></div>
+              <div><dt>Урбо - Салат Греческий</dt><dd>3 289 ₸</dd></div>
+              <div><dt>Урбо - Салат Цезарь</dt><dd>3 509 ₸</dd></div>
+              <div><dt>Ачучук</dt><dd>1 900 ₸</dd></div>
+              <div><dt>Сусын (1 л)</dt><dd>1 000 ₸</dd></div>
+              <div><dt>Чай</dt><dd>1 500 ₸</dd></div>
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      <section class="order" id="order">
+        <div>
+          <p class="eyebrow">Тапсырыс</p>
+          <h2>Таңдалған сет</h2>
+          <p class="order-copy">
+            Тапсырыс кемінде 1 күн алдын қабылданады. Адам саны, жеткізу уақыты және жалпы сома WhatsApp арқылы нақтыланады.
+          </p>
+        </div>
+        <aside class="order-box" aria-live="polite">
+          <label class="order-select" for="order-set-select">
+            <span>Меню таңдаңыз</span>
+            <select id="order-set-select">
+              <option value="">Таңдаңыз</option>
+              <option value="kebab">Қазан-кебап</option>
+              <option value="plov">Плов</option>
+              <option value="manty">Манты</option>
+            </select>
+          </label>
+          <span>Таңдауыңыз</span>
+          <strong id="chosen-name">Әлі таңдалмады</strong>
+          <p id="chosen-price">Сет таңдаңыз</p>
+          <div class="order-details">
+            <label for="client-name">
+              <span>Клиент есімі</span>
+              <input id="client-name" type="text" placeholder="Атыңыз" autocomplete="name" />
+            </label>
+            <label for="client-phone-last">
+              <span>Телефон номерінің соңғы 4 саны</span>
+              <input id="client-phone-last" type="text" maxlength="4" inputmode="numeric" pattern="[0-9]{4}" placeholder="1234" />
+            </label>
+            <label for="order-people">
+              <span>Адам саны</span>
+              <input id="order-people" type="number" min="1" max="120" value="12" inputmode="numeric" />
+            </label>
+            <label for="order-date">
+              <span>Қай күні келеді</span>
+              <input id="order-date" type="date" />
+            </label>
+            <label for="order-time">
+              <span>Сағат нешеге келеді</span>
+              <input id="order-time" type="time" />
+            </label>
+            <label for="order-venue">
+              <span>Отыратын орын</span>
+              <select id="order-venue">
+                <option value="terrace">9 қабат терраса - аренда 20 000 ₸</option>
+                <option value="urbo">1 қабат Урбо кофейня - аренда 0 ₸</option>
+              </select>
+            </label>
+          </div>
+          <a id="whatsapp-link" class="button primary full" href="https://wa.me/77787783636" target="_blank" rel="noreferrer">WhatsApp арқылы жазу</a>
+        </aside>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>Mugalim Терраса дәмханасы</span>
+      <span>Тапсырыс: кемінде 1 күн алдын</span>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
