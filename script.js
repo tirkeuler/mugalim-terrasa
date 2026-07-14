@@ -9,6 +9,24 @@ const orderPeople = document.querySelector("#order-people");
 const orderDate = document.querySelector("#order-date");
 const orderTime = document.querySelector("#order-time");
 const orderVenue = document.querySelector("#order-venue");
+const pdfClientName = document.querySelector("#pdf-client-name");
+const pdfClientPhone = document.querySelector("#pdf-client-phone");
+const pdfSetName = document.querySelector("#pdf-set-name");
+const pdfPeople = document.querySelector("#pdf-people");
+const pdfDate = document.querySelector("#pdf-date");
+const pdfTime = document.querySelector("#pdf-time");
+const pdfVenue = document.querySelector("#pdf-venue");
+const pdfRent = document.querySelector("#pdf-rent");
+const pdfFoods = document.querySelector("#pdf-foods");
+const pdfAddedFoods = document.querySelector("#pdf-added-foods");
+const pdfRemovedFoods = document.querySelector("#pdf-removed-foods");
+const pdfSalads = document.querySelector("#pdf-salads");
+const pdfChangedSalads = document.querySelector("#pdf-changed-salads");
+const pdfRemovedSalads = document.querySelector("#pdf-removed-salads");
+const pdfDrinks = document.querySelector("#pdf-drinks");
+const pdfChangedDrinks = document.querySelector("#pdf-changed-drinks");
+const pdfRemovedDrinks = document.querySelector("#pdf-removed-drinks");
+const pdfTotal = document.querySelector("#pdf-total");
 const setType = document.querySelector("#set-type");
 const peopleCount = document.querySelector("#people-count");
 const calcSoup = document.querySelector("#calc-soup");
@@ -37,6 +55,7 @@ const removedFoodList = document.querySelector("#removed-food-list");
 const totalKebab = document.querySelector("#total-kebab");
 const totalPlov = document.querySelector("#total-plov");
 const totalManty = document.querySelector("#total-manty");
+const rentRows = document.querySelectorAll(".rent-row");
 const menuKebabSummary = document.querySelector("#menu-kebab-summary");
 const menuPlovSummary = document.querySelector("#menu-plov-summary");
 const menuMantySummary = document.querySelector("#menu-manty-summary");
@@ -54,6 +73,7 @@ let baselineSaladQuantities = {};
 let baselineDrinkQuantities = {};
 let baselineFoodQuantities = {};
 let lastFoodTemplateKey = "";
+let lastDrinkTemplateKey = "";
 const saladCatalog = [
   { id: "eggplant", name: "Хрустящие баклажаны", price: 4719 },
   { id: "greek", name: "Греческий", price: 3289 },
@@ -236,6 +256,7 @@ function updateGroupSet() {
   const actualSamsaPlates = manualSamsaPlates ?? samsaPlates;
   const samsaPieces = actualSamsaPlates * 6;
   const drinkSets = Math.ceil(people / 4);
+  syncDrinkQuantity(drinkSets);
   const drinkLiters = calculateDrinkLiters();
   const baursakKg = Math.ceil(people / 12);
   const saladPlates = Math.ceil(people / 2);
@@ -281,6 +302,7 @@ function updateGroupSet() {
   menuKebabSummary.textContent = `${people} адам · ${formatTenge(totals.kebab)}`;
   menuPlovSummary.textContent = `${people} адам · ${formatTenge(totals.plov)}`;
   menuMantySummary.textContent = `${people} адам · ${formatTenge(totals.manty)}`;
+  updateRentRows();
   updateOrderBox({ people, totals });
 }
 
@@ -291,16 +313,34 @@ function updateOrderBox({ people, totals }) {
   const timeText = orderTime.value ? orderTime.value : "әлі таңдалмады";
   const venue = getVenueDetails();
   const rentText = formatTenge(venue.rent);
-  const foodText = getFoodSummary();
 
   if (!selectedOrderSet) {
-    const message = encodeURIComponent(
-      `Сәлеметсіз бе! Тапсырыс бергім келеді. Клиент есімі: ${nameText}. Телефон номерінің соңғы 4 саны: ${phoneText}. Сет: әлі таңдалмады. Адам саны: ${people}. Келетін күні: ${dateText}. Келетін сағаты: ${timeText}. Отыратын орын: ${venue.name}. Аренда: ${rentText}. Сет ішіндегі тағам өзгерісі: ${foodText}.`
-    );
+    const message = encodeURIComponent(buildWhatsAppOrderText({
+      nameText,
+      phoneText,
+      setText: "әлі таңдалмады",
+      people,
+      dateText,
+      timeText,
+      venue,
+      rentText,
+      totalText: "0 ₸",
+    }));
 
     chosenName.textContent = "Әлі таңдалмады";
     chosenPrice.textContent = "Сет таңдаңыз";
     whatsappLink.href = `https://wa.me/77787783636?text=${message}`;
+    updatePdfSummary({
+      nameText,
+      phoneText,
+      setText: "әлі таңдалмады",
+      people,
+      dateText,
+      timeText,
+      venue,
+      rentText,
+      totalText: "0 ₸",
+    });
     return;
   }
 
@@ -310,17 +350,142 @@ function updateOrderBox({ people, totals }) {
     manty: "Манты",
   };
   const total = formatTenge(totals[selectedOrderSet]);
-  const message = encodeURIComponent(
-    `Сәлеметсіз бе! ${setNames[selectedOrderSet]} сетіне тапсырыс бергім келеді. Клиент есімі: ${nameText}. Телефон номерінің соңғы 4 саны: ${phoneText}. Адам саны: ${people}. Келетін күні: ${dateText}. Келетін сағаты: ${timeText}. Отыратын орын: ${venue.name}. Аренда: ${rentText}. Сет ішіндегі тағам өзгерісі: ${foodText}. Толық бағасы: ${total}. Тапсырыс уақыты кемінде 1 күн алдын екенін білемін.`
-  );
+  const message = encodeURIComponent(buildWhatsAppOrderText({
+    nameText,
+    phoneText,
+    setText: setNames[selectedOrderSet],
+    people,
+    dateText,
+    timeText,
+    venue,
+    rentText,
+    totalText: total,
+  }));
 
   chosenName.textContent = setNames[selectedOrderSet];
   chosenPrice.textContent = `Толық бағасы: ${total} · Аренда: ${rentText}`;
   whatsappLink.href = `https://wa.me/77787783636?text=${message}`;
+  updatePdfSummary({
+    nameText,
+    phoneText,
+    setText: setNames[selectedOrderSet],
+    people,
+    dateText,
+    timeText,
+    venue,
+    rentText,
+    totalText: total,
+  });
 }
 
 function formatTenge(value) {
   return `${new Intl.NumberFormat("kk-KZ").format(value)} ₸`;
+}
+
+function formatCollectionForPdf(collection, defaultUnit = "дана") {
+  if (!collection.length) return "-";
+  return collection
+    .map((item) => `${item.name}: ${item.quantity} ${item.unit || defaultUnit}`)
+    .join("\n");
+}
+
+function formatChangedCollectionForPdf(collection, baseline, defaultUnit = "дана") {
+  const changed = collection.filter((item) => baseline[item.id] === undefined || item.quantity !== baseline[item.id]);
+  if (!changed.length) return "өзгеріс жоқ";
+
+  return changed
+    .map((item) => {
+      const unit = item.unit || defaultUnit;
+      const baseQuantity = baseline[item.id];
+      if (baseQuantity === undefined) return `${item.name}: ${item.quantity} ${unit}`;
+      const diff = item.quantity - baseQuantity;
+      const sign = diff > 0 ? "+" : "";
+      return `${item.name}: ${item.quantity} ${unit} (${sign}${diff})`;
+    })
+    .join("\n");
+}
+
+function formatRemovedCollectionForPdf(collection, defaultUnit = "дана") {
+  if (!collection.length) return "өзгеріс жоқ";
+  return collection.map((item) => `${item.name}: өшірілді`).join("\n");
+}
+
+function buildWhatsAppOrderText({ nameText, phoneText, setText, people, dateText, timeText, venue, rentText, totalText }) {
+  const section = (title, value) => `${title}:\n${value}`;
+
+  return [
+    "Сәлеметсіз бе! Тапсырыс бергім келеді.",
+    "",
+    "Mugalim терраса дәмханасы",
+    "Тапсырыс парағы",
+    "",
+    `Клиент есімі: ${nameText}`,
+    `Телефон соңғы 4 саны: ${phoneText}`,
+    `Сет: ${setText}`,
+    `Адам саны: ${people} адам`,
+    `Келетін күні: ${dateText}`,
+    `Келетін сағаты: ${timeText}`,
+    `Отыратын орын: ${venue.name}`,
+    `Аренда: ${rentText}`,
+    "",
+    section("Сет ішіндегі тағамдар", formatCollectionForPdf(foods)),
+    section("Сетке тағам қосу", formatChangedCollectionForPdf(foods, baselineFoodQuantities)),
+    section("Сеттен алынған тағамдар", formatRemovedCollectionForPdf(removedFoods)),
+    "",
+    section("Салаттар", formatCollectionForPdf(salads, "тарелка")),
+    section("Салат менюі", formatChangedCollectionForPdf(salads, baselineSaladQuantities, "тарелка")),
+    section("Өшірілген салаттар", formatRemovedCollectionForPdf(removedSalads, "тарелка")),
+    "",
+    section("Сусындар", formatCollectionForPdf(drinks, "шт")),
+    section("Сусын менюі", formatChangedCollectionForPdf(drinks, baselineDrinkQuantities, "шт")),
+    section("Өшірілген сусындар", formatRemovedCollectionForPdf(removedDrinks, "шт")),
+    "",
+    `Толық бағасы: ${totalText}`,
+    "Тапсырыс кемінде 1 күн алдын қабылданатынын білемін.",
+  ].join("\n");
+}
+
+function updatePdfSummary({ nameText, phoneText, setText, people, dateText, timeText, venue, rentText, totalText }) {
+  setPdfValue(pdfClientName, nameText);
+  setPdfValue(pdfClientPhone, phoneText);
+  setPdfValue(pdfSetName, setText);
+  setPdfValue(pdfPeople, `${people} адам`);
+  setPdfValue(pdfDate, dateText);
+  setPdfValue(pdfTime, timeText);
+  setPdfValue(pdfVenue, venue.name);
+  setPdfValue(pdfRent, rentText);
+  setPdfValue(pdfFoods, formatCollectionForPdf(foods));
+  setPdfChangeValue(pdfAddedFoods, formatChangedCollectionForPdf(foods, baselineFoodQuantities));
+  setPdfChangeValue(pdfRemovedFoods, formatRemovedCollectionForPdf(removedFoods));
+  setPdfValue(pdfSalads, formatCollectionForPdf(salads, "тарелка"));
+  setPdfChangeValue(pdfChangedSalads, formatChangedCollectionForPdf(salads, baselineSaladQuantities, "тарелка"));
+  setPdfChangeValue(pdfRemovedSalads, formatRemovedCollectionForPdf(removedSalads, "тарелка"));
+  setPdfValue(pdfDrinks, formatCollectionForPdf(drinks, "шт"));
+  setPdfChangeValue(pdfChangedDrinks, formatChangedCollectionForPdf(drinks, baselineDrinkQuantities, "шт"));
+  setPdfChangeValue(pdfRemovedDrinks, formatRemovedCollectionForPdf(removedDrinks, "шт"));
+  setPdfValue(pdfTotal, totalText);
+}
+
+function setPdfValue(element, value) {
+  element.textContent = value;
+  element.classList.toggle("is-missing", value.startsWith("әлі "));
+}
+
+function setPdfChangeValue(element, value) {
+  element.textContent = value;
+  element.classList.toggle("is-changed", value !== "өзгеріс жоқ");
+}
+
+function updateRentRows() {
+  const venue = getVenueDetails();
+  const isTerrace = orderVenue.value !== "urbo";
+  const label = isTerrace ? "Аренда. Терраса" : "Аренда. Урбо";
+
+  rentRows.forEach((row) => {
+    row.classList.toggle("is-highlighted", isTerrace);
+    row.querySelector("dt").textContent = label;
+    row.querySelector("dd").textContent = formatTenge(venue.rent);
+  });
 }
 
 function syncSaladQuantity(plateCount) {
@@ -427,7 +592,16 @@ function calculateTotals({ people, samsaPieces, drinkSets, baursakKg, saladPlate
 
 function syncDrinkQuantity(setCount) {
   if (!drinks.length) return;
+  const templateKey = `drink-set:${setCount}`;
+  if (templateKey === lastDrinkTemplateKey) return;
+
   drinks = drinks.map((drink) => ({ ...drink, quantity: setCount }));
+  customDrinkIds.clear();
+  rememberBaseline(drinks, baselineDrinkQuantities);
+  lastDrinkTemplateKey = templateKey;
+  renderDrinks();
+  renderRemovedDrinks();
+  renderDrinkMenu();
 }
 
 function rememberBaseline(collection, target) {

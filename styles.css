@@ -214,6 +214,17 @@ h3 {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
 }
 
+.secondary {
+  color: var(--leaf-dark);
+  border: 1px solid rgba(55, 114, 77, 0.24);
+  background: var(--cream);
+}
+
+.secondary:hover {
+  color: var(--white);
+  background: var(--leaf);
+}
+
 .quick-panel {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -443,7 +454,15 @@ h3 {
   min-height: 48px;
   padding: 0 42px 0 14px;
   color: var(--ink);
-  background: #fffdf9;
+  background-color: #fffdf9;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--brand-dark) 50%),
+    linear-gradient(135deg, var(--brand-dark) 50%, transparent 50%);
+  background-position:
+    calc(100% - 22px) 50%,
+    calc(100% - 16px) 50%;
+  background-repeat: no-repeat;
+  background-size: 7px 7px, 7px 7px;
   border: 1px solid var(--line);
   border-radius: 10px;
   text-align: left;
@@ -452,25 +471,12 @@ h3 {
 }
 
 .custom-select-button::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  right: 16px;
-  width: 8px;
-  height: 8px;
-  border-right: 2px solid var(--brand-dark);
-  border-bottom: 2px solid var(--brand-dark);
-  transform: translateY(-62%) rotate(45deg);
-  transition: transform 0.18s ease;
+  display: none;
 }
 
 .custom-select.open .custom-select-button {
   border-color: rgba(181, 51, 43, 0.48);
   box-shadow: 0 0 0 3px rgba(181, 51, 43, 0.1);
-}
-
-.custom-select.open .custom-select-button::after {
-  transform: translateY(-35%) rotate(225deg);
 }
 
 .custom-select-menu {
@@ -962,6 +968,29 @@ h3 {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
 }
 
+.order-select select,
+.order-details select,
+.salad-form select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 44px;
+  background-color: #fffdf9;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--brand-dark) 50%),
+    linear-gradient(135deg, var(--brand-dark) 50%, transparent 50%);
+  background-position:
+    calc(100% - 22px) 50%,
+    calc(100% - 16px) 50%;
+  background-repeat: no-repeat;
+  background-size: 7px 7px, 7px 7px;
+}
+
+.order-select select::-ms-expand,
+.order-details select::-ms-expand,
+.salad-form select::-ms-expand {
+  display: none;
+}
+
 .order-select select:focus,
 .order-details input:focus,
 .order-details select:focus {
@@ -1016,6 +1045,10 @@ h3 {
   margin-top: 18px;
 }
 
+.pdf-summary {
+  display: none;
+}
+
 .footer {
   display: flex;
   justify-content: space-between;
@@ -1024,6 +1057,121 @@ h3 {
   color: var(--muted);
   border-top: 1px solid var(--line);
   background: rgba(255, 248, 237, 0.7);
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+
+  body {
+    color: #201b16;
+    background: #ffffff;
+  }
+
+  .topbar,
+  main > :not(.pdf-summary),
+  .footer {
+    display: none !important;
+  }
+
+  .pdf-summary {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-main);
+  }
+
+  .pdf-header {
+    display: grid;
+    gap: 6px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #7b1b16;
+  }
+
+  .pdf-header span {
+    color: #6d6258;
+    font-size: 12px;
+    font-weight: 750;
+  }
+
+  .pdf-header strong {
+    color: #201b16;
+    font-size: 25px;
+    line-height: 1.1;
+  }
+
+  .pdf-details {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    border: 1px solid #e8d7c1;
+  }
+
+  .pdf-details div {
+    display: grid;
+    grid-template-columns: 34% 66%;
+    min-height: 28px;
+    border-bottom: 1px solid #e8d7c1;
+    break-inside: avoid;
+  }
+
+  .pdf-details div:last-child {
+    border-bottom: 0;
+  }
+
+  .pdf-details dt,
+  .pdf-details dd {
+    margin: 0;
+    padding: 6px 8px;
+    font-size: 10.5px;
+    line-height: 1.28;
+  }
+
+  .pdf-details dt {
+    color: #6d6258;
+    background: #fff8ed;
+    font-weight: 700;
+  }
+
+  .pdf-details dd {
+    color: #201b16;
+    font-weight: 650;
+    white-space: pre-line;
+  }
+
+  .pdf-details dd.is-missing {
+    color: #7b1b16;
+    background: #fff0e8;
+    box-shadow: inset 4px 0 0 #b92f27;
+    font-weight: 850;
+    font-style: italic;
+  }
+
+  .pdf-details dd.is-changed {
+    color: #24543a;
+    background: #eef8ef;
+    box-shadow: inset 4px 0 0 #37724d;
+    font-weight: 850;
+    font-style: italic;
+  }
+
+  .pdf-details .pdf-total dt,
+  .pdf-details .pdf-total dd {
+    color: #7b1b16;
+    background: #f5eadb;
+    font-size: 14px;
+    font-weight: 850;
+  }
+
+  .pdf-note {
+    margin-top: 10px;
+    color: #6d6258;
+    font-size: 10px;
+  }
 }
 
 @media (max-width: 900px) {

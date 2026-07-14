@@ -3,14 +3,14 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Mugalim Терраса дәмханасы</title>
+    <title>Mugalim терраса дәмханасы</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <header class="topbar">
       <a class="brand" href="#top" aria-label="Басты бет">
         <span class="brand-mark">M</span>
-        <span>Mugalim Терраса дәмханасы</span>
+        <span>Mugalim терраса дәмханасы</span>
       </a>
       <nav class="nav" aria-label="Бөлімдер">
         <a href="#sets">Сеттер</a>
@@ -21,7 +21,7 @@
 
     <main id="top">
       <section class="hero" aria-labelledby="hero-title">
-        <img src="assets/dastarhan-hero.png" alt="Mugalim Терраса дәмханасының тағамдары" />
+        <img src="assets/dastarhan-hero.png" alt="Mugalim терраса дәмханасының тағамдары" />
         <div class="hero-shade"></div>
         <div class="hero-content">
           <p class="eyebrow">Дайын сеттер</p>
@@ -229,6 +229,7 @@
           <div>
             <h3>Қазан-кебап сеті <span class="menu-summary" id="menu-kebab-summary">12 адам · 0 ₸</span></h3>
             <dl class="price-list">
+              <div class="rent-row is-highlighted"><dt>Аренда. Терраса</dt><dd>20 000 ₸</dd></div>
               <div><dt>Қайнатпа сорпа (п)</dt><dd>1 700 ₸</dd></div>
               <div><dt>Қазан-кебап</dt><dd>3 000 ₸</dd></div>
               <div><dt>Самса (шт)</dt><dd>450 ₸</dd></div>
@@ -245,6 +246,7 @@
           <div>
             <h3>Плов сеті <span class="menu-summary" id="menu-plov-summary">12 адам · 0 ₸</span></h3>
             <dl class="price-list">
+              <div class="rent-row is-highlighted"><dt>Аренда. Терраса</dt><dd>20 000 ₸</dd></div>
               <div><dt>Қайнатпа сорпа (п)</dt><dd>1 700 ₸</dd></div>
               <div><dt>Плов (п)</dt><dd>2 500 ₸</dd></div>
               <div><dt>Самса (шт)</dt><dd>450 ₸</dd></div>
@@ -261,6 +263,7 @@
           <div>
             <h3>Манты сеті <span class="menu-summary" id="menu-manty-summary">12 адам · 0 ₸</span></h3>
             <dl class="price-list">
+              <div class="rent-row is-highlighted"><dt>Аренда. Терраса</dt><dd>20 000 ₸</dd></div>
               <div><dt>Қайнатпа сорпа (п)</dt><dd>1 700 ₸</dd></div>
               <div><dt>Манты (шт)</dt><dd>450 ₸</dd></div>
               <div><dt>Самса (шт)</dt><dd>450 ₸</dd></div>
@@ -284,6 +287,11 @@
           <p class="order-copy">
             Тапсырыс кемінде 1 күн алдын қабылданады. Адам саны, жеткізу уақыты және жалпы сома WhatsApp арқылы нақтыланады.
           </p>
+          <div class="order-points" aria-label="Тапсырыс шарттары">
+            <span>1 күн алдын</span>
+            <span>WhatsApp арқылы</span>
+            <span>Орын таңдау</span>
+          </div>
         </div>
         <aside class="order-box" aria-live="polite">
           <label class="order-select" for="order-set-select">
@@ -330,10 +338,38 @@
           <a id="whatsapp-link" class="button primary full" href="https://wa.me/77787783636" target="_blank" rel="noreferrer">WhatsApp арқылы жазу</a>
         </aside>
       </section>
+
+      <section class="pdf-summary" aria-label="PDF тапсырыс нұсқасы">
+        <div class="pdf-header">
+          <span>Mugalim терраса дәмханасы</span>
+          <strong>Тапсырыс парағы</strong>
+        </div>
+        <dl class="pdf-details">
+          <div><dt>Клиент есімі</dt><dd id="pdf-client-name">әлі жазылмады</dd></div>
+          <div><dt>Телефон соңғы 4 саны</dt><dd id="pdf-client-phone">әлі жазылмады</dd></div>
+          <div><dt>Сет</dt><dd id="pdf-set-name">әлі таңдалмады</dd></div>
+          <div><dt>Адам саны</dt><dd id="pdf-people">12</dd></div>
+          <div><dt>Келетін күні</dt><dd id="pdf-date">әлі таңдалмады</dd></div>
+          <div><dt>Келетін сағаты</dt><dd id="pdf-time">әлі таңдалмады</dd></div>
+          <div><dt>Отыратын орын</dt><dd id="pdf-venue">9 қабат терраса</dd></div>
+          <div><dt>Аренда</dt><dd id="pdf-rent">20 000 ₸</dd></div>
+          <div><dt>Сет ішіндегі тағамдар</dt><dd id="pdf-foods">-</dd></div>
+          <div><dt>Сетке тағам қосу</dt><dd id="pdf-added-foods">өзгеріс жоқ</dd></div>
+          <div><dt>Сеттен алынған тағамдар</dt><dd id="pdf-removed-foods">өзгеріс жоқ</dd></div>
+          <div><dt>Салаттар</dt><dd id="pdf-salads">-</dd></div>
+          <div><dt>Салат менюі</dt><dd id="pdf-changed-salads">өзгеріс жоқ</dd></div>
+          <div><dt>Өшірілген салаттар</dt><dd id="pdf-removed-salads">өзгеріс жоқ</dd></div>
+          <div><dt>Сусындар</dt><dd id="pdf-drinks">-</dd></div>
+          <div><dt>Сусын менюі</dt><dd id="pdf-changed-drinks">өзгеріс жоқ</dd></div>
+          <div><dt>Өшірілген сусындар</dt><dd id="pdf-removed-drinks">өзгеріс жоқ</dd></div>
+          <div class="pdf-total"><dt>Толық бағасы</dt><dd id="pdf-total">0 ₸</dd></div>
+        </dl>
+        <p class="pdf-note">Тапсырыс кемінде 1 күн алдын қабылданады. Жалпы сома WhatsApp арқылы нақтыланады.</p>
+      </section>
     </main>
 
     <footer class="footer">
-      <span>Mugalim Терраса дәмханасы</span>
+      <span>Mugalim терраса дәмханасы</span>
       <span>Тапсырыс: кемінде 1 күн алдын</span>
     </footer>
 
