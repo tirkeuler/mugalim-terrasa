@@ -572,7 +572,7 @@ h3 {
 }
 
 .calculator-controls {
-  grid-template-columns: minmax(190px, 1.25fr) minmax(110px, 0.7fr) minmax(230px, 1.45fr);
+  grid-template-columns: 1fr;
   align-items: start;
   width: var(--calc-control-width);
   position: relative;
@@ -580,7 +580,7 @@ h3 {
 }
 
 .people-control:has(#calc-rent-duration) {
-  grid-column: 1 / -1;
+  grid-column: auto;
 }
 
 .rent-duration-control.is-hidden {
