@@ -1576,6 +1576,7 @@ h3 {
 
   .calc-lodging-panel {
     grid-column: 1;
+    width: 100%;
   }
 
   .calc-lodging-panel > div {
