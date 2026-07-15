@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="kk">
   <head>
     <meta charset="utf-8" />
@@ -18,15 +18,6 @@
           <a href="#menu">Тағамдар</a>
           <a href="#order">Тапсырыс</a>
         </nav>
-        <div class="language-toggle" aria-label="Тіл таңдау">
-          <a class="active" href="index.html" data-lang="kk">Қаз</a>
-          <a href="ru.html" data-lang="ru">Рус</a>
-          <a href="en.html" data-lang="en">Eng</a>
-          <a href="uz.html" data-lang="uz">Oʻz</a>
-          <a href="tr.html" data-lang="tr">Tür</a>
-          <a href="zh.html" data-lang="zh">中文</a>
-          <a href="ky.html" data-lang="ky">Кыр</a>
-        </div>
       </div>
     </header>
 
@@ -102,9 +93,9 @@
 
         <div class="group-calculator" aria-labelledby="group-title">
           <div class="calculator-copy">
-            <p class="eyebrow">Топпен келгенде</p>
-            <h3 id="group-title">Топтық сет есебі</h3>
-            <p>Адам санын енгізіңіз, сет құрамы автоматты есептеледі.</p>
+            <p class="eyebrow">Сетті өзгерту</p>
+            <h3 id="group-title">Сетті өзіңізге ыңғайлы етіп өзгерту</h3>
+            <p>Адам санын, тағамды, салатты және сусынды өз қалауыңызға қарай өзгертіңіз.</p>
           </div>
           <div class="calculator-controls">
             <label class="people-control">
@@ -119,6 +110,41 @@
               <span>Адам саны</span>
               <input id="people-count" type="number" min="1" max="120" value="12" inputmode="numeric" />
             </label>
+            <label class="people-control">
+              <span>Отыратын орын</span>
+              <select id="calc-venue">
+                <option value="terrace">9 қабат терраса - аренда 20 000 ₸</option>
+                <option value="floor8">8 қабат</option>
+                <option value="urbo">1 қабат Урбо кофейня - аренда 0 ₸</option>
+                <option value="none">Орынсыз - аренда 0 ₸</option>
+              </select>
+            </label>
+            <label class="people-control rent-duration-control is-hidden" for="calc-rent-duration">
+              <span>8 қабат. сағат.</span>
+              <select id="calc-rent-duration">
+                <option value="1">1 сағат - 20 000 ₸</option>
+                <option value="2">2 сағат - 30 000 ₸</option>
+                <option value="3">3 сағат - 40 000 ₸</option>
+                <option value="unlimited">Безлимит - 50 000 ₸</option>
+              </select>
+            </label>
+          </div>
+          <div class="lodging-control calc-lodging-panel is-hidden">
+            <strong>қону</strong>
+            <div>
+              <label for="lodging-arrival-date">
+                <span>Қонуға қай күні келеді</span>
+                <input id="lodging-arrival-date" type="text" inputmode="numeric" maxlength="10" placeholder="кк.аа.жжжж" />
+              </label>
+              <label for="lodging-return-date">
+                <span>Қай күні қайтады</span>
+                <input id="lodging-return-date" type="text" inputmode="numeric" maxlength="10" placeholder="кк.аа.жжжж" />
+              </label>
+              <label for="lodging-return-time">
+                <span>Қай сағатта қайтады</span>
+                <input id="lodging-return-time" type="text" inputmode="numeric" maxlength="5" placeholder="сағ:мин" />
+              </label>
+            </div>
           </div>
           <div class="calc-grid" aria-live="polite">
             <div class="calc-item">
@@ -239,7 +265,7 @@
         <div class="menu-list">
           <div>
             <h3>Қазан-кебап сеті <span class="menu-summary" id="menu-kebab-summary">12 адам · 0 ₸</span></h3>
-            <dl class="price-list">
+            <dl class="price-list" id="menu-kebab-list">
               <div class="rent-row is-highlighted"><dt>Аренда. Терраса</dt><dd>20 000 ₸</dd></div>
               <div><dt>Қайнатпа сорпа (п)</dt><dd>1 700 ₸</dd></div>
               <div><dt>Қазан-кебап</dt><dd>3 000 ₸</dd></div>
@@ -255,7 +281,7 @@
           </div>
           <div>
             <h3>Плов сеті <span class="menu-summary" id="menu-plov-summary">12 адам · 0 ₸</span></h3>
-            <dl class="price-list">
+            <dl class="price-list" id="menu-plov-list">
               <div class="rent-row is-highlighted"><dt>Аренда. Терраса</dt><dd>20 000 ₸</dd></div>
               <div><dt>Қайнатпа сорпа (п)</dt><dd>1 700 ₸</dd></div>
               <div><dt>Плов (п)</dt><dd>2 500 ₸</dd></div>
@@ -271,7 +297,7 @@
           </div>
           <div>
             <h3>Манты сеті <span class="menu-summary" id="menu-manty-summary">12 адам · 0 ₸</span></h3>
-            <dl class="price-list">
+            <dl class="price-list" id="menu-manty-list">
               <div class="rent-row is-highlighted"><dt>Аренда. Терраса</dt><dd>20 000 ₸</dd></div>
               <div><dt>Қайнатпа сорпа (п)</dt><dd>1 700 ₸</dd></div>
               <div><dt>Манты (шт)</dt><dd>450 ₸</dd></div>
@@ -339,7 +365,18 @@
               <span>Отыратын орын</span>
               <select id="order-venue">
                 <option value="terrace">9 қабат терраса - аренда 20 000 ₸</option>
+                <option value="floor8">8 қабат</option>
                 <option value="urbo">1 қабат Урбо кофейня - аренда 0 ₸</option>
+                <option value="none">Орынсыз - аренда 0 ₸</option>
+              </select>
+            </label>
+            <label class="rent-duration-control is-hidden" for="order-rent-duration">
+              <span>8 қабат. сағат.</span>
+              <select id="order-rent-duration">
+                <option value="1">1 сағат - 20 000 ₸</option>
+                <option value="2">2 сағат - 30 000 ₸</option>
+                <option value="3">3 сағат - 40 000 ₸</option>
+                <option value="unlimited">Безлимит - 50 000 ₸</option>
               </select>
             </label>
           </div>
@@ -361,6 +398,9 @@
           <div><dt>Келетін сағаты</dt><dd id="pdf-time">әлі таңдалмады</dd></div>
           <div><dt>Отыратын орын</dt><dd id="pdf-venue">9 қабат терраса</dd></div>
           <div><dt>Аренда</dt><dd id="pdf-rent">20 000 ₸</dd></div>
+          <div class="lodging-row is-hidden"><dt>Қонуға қай күні келеді</dt><dd id="pdf-lodging-arrival">әлі таңдалмады</dd></div>
+          <div class="lodging-row is-hidden"><dt>Қай күні қайтады</dt><dd id="pdf-lodging-return-date">әлі таңдалмады</dd></div>
+          <div class="lodging-row is-hidden"><dt>Қай сағатта қайтады</dt><dd id="pdf-lodging-return-time">әлі таңдалмады</dd></div>
           <div><dt>Сет ішіндегі тағамдар</dt><dd id="pdf-foods">-</dd></div>
           <div><dt>Сетке тағам қосу</dt><dd id="pdf-added-foods">өзгеріс жоқ</dd></div>
           <div><dt>Сеттен алынған тағамдар</dt><dd id="pdf-removed-foods">өзгеріс жоқ</dd></div>
@@ -384,3 +424,14 @@
     <script src="script.js"></script>
   </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+

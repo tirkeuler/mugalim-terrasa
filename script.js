@@ -1,4 +1,4 @@
-const cards = document.querySelectorAll(".set-card");
+﻿const cards = document.querySelectorAll(".set-card");
 const chosenName = document.querySelector("#chosen-name");
 const chosenPrice = document.querySelector("#chosen-price");
 const whatsappLink = document.querySelector("#whatsapp-link");
@@ -9,6 +9,17 @@ const orderPeople = document.querySelector("#order-people");
 const orderDate = document.querySelector("#order-date");
 const orderTime = document.querySelector("#order-time");
 const orderVenue = document.querySelector("#order-venue");
+const calcVenue = document.querySelector("#calc-venue");
+const orderRentDuration = document.querySelector("#order-rent-duration");
+const calcRentDuration = document.querySelector("#calc-rent-duration");
+const rentDurationControls = document.querySelectorAll(".rent-duration-control");
+const lodgingControls = document.querySelectorAll(".lodging-control");
+const lodgingRows = document.querySelectorAll(".lodging-row");
+const lodgingArrivalDate = document.querySelector("#lodging-arrival-date");
+const lodgingReturnDate = document.querySelector("#lodging-return-date");
+const lodgingReturnTime = document.querySelector("#lodging-return-time");
+const calculatorControls = document.querySelector(".calculator-controls");
+const orderDetails = document.querySelector(".order-details");
 const pdfClientName = document.querySelector("#pdf-client-name");
 const pdfClientPhone = document.querySelector("#pdf-client-phone");
 const pdfSetName = document.querySelector("#pdf-set-name");
@@ -17,6 +28,9 @@ const pdfDate = document.querySelector("#pdf-date");
 const pdfTime = document.querySelector("#pdf-time");
 const pdfVenue = document.querySelector("#pdf-venue");
 const pdfRent = document.querySelector("#pdf-rent");
+const pdfLodgingArrival = document.querySelector("#pdf-lodging-arrival");
+const pdfLodgingReturnDate = document.querySelector("#pdf-lodging-return-date");
+const pdfLodgingReturnTime = document.querySelector("#pdf-lodging-return-time");
 const pdfFoods = document.querySelector("#pdf-foods");
 const pdfAddedFoods = document.querySelector("#pdf-added-foods");
 const pdfRemovedFoods = document.querySelector("#pdf-removed-foods");
@@ -59,9 +73,12 @@ const rentRows = document.querySelectorAll(".rent-row");
 const menuKebabSummary = document.querySelector("#menu-kebab-summary");
 const menuPlovSummary = document.querySelector("#menu-plov-summary");
 const menuMantySummary = document.querySelector("#menu-manty-summary");
+const menuKebabList = document.querySelector("#menu-kebab-list");
+const menuPlovList = document.querySelector("#menu-plov-list");
+const menuMantyList = document.querySelector("#menu-manty-list");
 const languageButtons = document.querySelectorAll("[data-lang]");
 
-const supportedLanguages = ["kk", "ru", "en", "uz", "tr", "zh", "ky"];
+const supportedLanguages = ["kk"];
 let currentLang = document.documentElement.lang || localStorage.getItem("mugalim-lang") || "kk";
 if (!supportedLanguages.includes(currentLang)) currentLang = "kk";
 
@@ -114,8 +131,10 @@ const copy = {
     agreement: "Жоғарыдағы тапсырыстарға толықтай келісемін.",
     terrace: "9 қабат терраса",
     urbo: "1 қабат Урбо кофейня",
+    noVenue: "Орынсыз",
     terraceRent: "Аренда. Терраса",
     urboRent: "Аренда. Урбо",
+    noVenueRent: "Аренда. Орынсыз",
   },
   ru: {
     choose: "Выберите",
@@ -165,8 +184,10 @@ const copy = {
     agreement: "Полностью согласен/согласна с указанным выше заказом.",
     terrace: "9 этаж терраса",
     urbo: "1 этаж кофейня Урбо",
+    noVenue: "Без места",
     terraceRent: "Аренда. Терраса",
     urboRent: "Аренда. Урбо",
+    noVenueRent: "Аренда. Без места",
   },
   en: {
     choose: "Choose",
@@ -216,8 +237,10 @@ const copy = {
     agreement: "I fully agree with the order above.",
     terrace: "9th floor terrace",
     urbo: "1st floor Urbo coffee shop",
+    noVenue: "No seating",
     terraceRent: "Rent. Terrace",
     urboRent: "Rent. Urbo",
+    noVenueRent: "Rent. No seating",
   },
   tr: {
     choose: "Seçiniz",
@@ -267,8 +290,10 @@ const copy = {
     agreement: "Yukarıdaki siparişi tamamen kabul ediyorum.",
     terrace: "9. kat teras",
     urbo: "1. kat Urbo kahve",
+    noVenue: "Yersiz",
     terraceRent: "Kira. Teras",
     urboRent: "Kira. Urbo",
+    noVenueRent: "Kira. Yersiz",
   },
   zh: {
     choose: "请选择",
@@ -318,8 +343,10 @@ const copy = {
     agreement: "我完全同意以上订单。",
     terrace: "9楼露台",
     urbo: "1楼 Urbo 咖啡馆",
+    noVenue: "无座位",
     terraceRent: "租金. 露台",
     urboRent: "租金. Urbo",
+    noVenueRent: "租金. 无座位",
   },
   ky: {
     choose: "Тандаңыз",
@@ -369,8 +396,10 @@ const copy = {
     agreement: "Жогорудагы буйрутмаларга толук макулмун.",
     terrace: "9-кабат терраса",
     urbo: "1-кабат Урбо кофейня",
+    noVenue: "Орунсуз",
     terraceRent: "Аренда. Терраса",
     urboRent: "Аренда. Урбо",
+    noVenueRent: "Аренда. Орунсуз",
   },
   uz: {
     choose: "Tanlang",
@@ -420,8 +449,10 @@ const copy = {
     agreement: "Yuqoridagi buyurtmalarga to'liq roziman.",
     terrace: "9-qavat terrasa",
     urbo: "1-qavat Urbo qahvaxonasi",
+    noVenue: "Joysiz",
     terraceRent: "Ijara. Terrasa",
     urboRent: "Ijara. Urbo",
+    noVenueRent: "Ijara. Joysiz",
   },
 };
 
@@ -450,9 +481,9 @@ const staticTranslations = {
   "Плов порциямен ұсынылады, қосымша тағамдар мен салаттар бөлек таңдауға ыңғайлы.": "Плов подается порционно, дополнительные блюда и салаты удобно выбрать отдельно.",
   "Бу тағамы": "Блюдо на пару",
   "Манты дана бойынша есептеледі, тапсырыс көлемі адам санына қарай нақтыланады.": "Манты считаются поштучно, объем заказа уточняется по количеству человек.",
-  "Топпен келгенде": "Для группы",
-  "Топтық сет есебі": "Расчет группового сета",
-  "Адам санын енгізіңіз, сет құрамы автоматты есептеледі.": "Введите количество человек, состав сета рассчитается автоматически.",
+  "Сетті өзгерту": "Изменить сет",
+  "Сетті өзіңізге ыңғайлы етіп өзгерту": "Измените сет под себя",
+  "Адам санын, тағамды, салатты және сусынды өз қалауыңызға қарай өзгертіңіз.": "Измените количество человек, блюда, салаты и напитки по своему желанию.",
   "Сет түрі": "Тип сета",
   "Адам саны": "Количество человек",
   "Қайнатпа сорпа": "Суп кайнатпа",
@@ -511,6 +542,7 @@ const staticTranslations = {
   "Отыратын орын": "Место",
   "9 қабат терраса - аренда 20 000 ₸": "9 этаж терраса - аренда 20 000 ₸",
   "1 қабат Урбо кофейня - аренда 0 ₸": "1 этаж кофейня Урбо - аренда 0 ₸",
+  "Орынсыз - аренда 0 ₸": "Без места - аренда 0 ₸",
   "WhatsApp арқылы жазу": "Написать в WhatsApp",
   "Тапсырыс парағы": "Лист заказа",
   "әлі жазылмады": "еще не заполнено",
@@ -572,9 +604,9 @@ const staticTranslationsAll = {
     "Плов порциямен ұсынылады, қосымша тағамдар мен салаттар бөлек таңдауға ыңғайлы.": "Plov is served by portion; additional dishes and salads can be selected separately.",
     "Бу тағамы": "Steamed dish",
     "Манты дана бойынша есептеледі, тапсырыс көлемі адам санына қарай нақтыланады.": "Manty is counted by piece; the order size is based on the number of people.",
-    "Топпен келгенде": "For groups",
-    "Топтық сет есебі": "Group set calculator",
-    "Адам санын енгізіңіз, сет құрамы автоматты есептеледі.": "Enter the number of people and the set composition will be calculated automatically.",
+    "Сетті өзгерту": "Customize set",
+    "Сетті өзіңізге ыңғайлы етіп өзгерту": "Customize the set your way",
+    "Адам санын, тағамды, салатты және сусынды өз қалауыңызға қарай өзгертіңіз.": "Change the number of people, dishes, salads and drinks as you like.",
     "Сет түрі": "Set type",
     "Адам саны": "Number of people",
     "Қайнатпа сорпа": "Kainatma soup",
@@ -633,6 +665,7 @@ const staticTranslationsAll = {
     "Отыратын орын": "Place",
     "9 қабат терраса - аренда 20 000 ₸": "9th floor terrace - rent 20 000 ₸",
     "1 қабат Урбо кофейня - аренда 0 ₸": "1st floor Urbo coffee shop - rent 0 ₸",
+    "Орынсыз - аренда 0 ₸": "No seating - rent 0 ₸",
     "WhatsApp арқылы жазу": "Write via WhatsApp",
     "Тапсырыс парағы": "Order sheet",
     "әлі жазылмады": "not filled yet",
@@ -682,9 +715,9 @@ const staticTranslationsAll = {
     "Плов порциямен ұсынылады, қосымша тағамдар мен салаттар бөлек таңдауға ыңғайлы.": "Pilav porsiyonla sunulur, ek yemekler ve salatalar ayrı seçilebilir.",
     "Бу тағамы": "Buharda yemek",
     "Манты дана бойынша есептеледі, тапсырыс көлемі адам санына қарай нақтыланады.": "Mantı adet olarak hesaplanır, sipariş miktarı kişi sayısına göre netleşir.",
-    "Топпен келгенде": "Grup için",
-    "Топтық сет есебі": "Grup set hesabı",
-    "Адам санын енгізіңіз, сет құрамы автоматты есептеледі.": "Kişi sayısını girin, set içeriği otomatik hesaplanır.",
+    "Сетті өзгерту": "Seti değiştir",
+    "Сетті өзіңізге ыңғайлы етіп өзгерту": "Seti kendinize göre değiştirin",
+    "Адам санын, тағамды, салатты және сусынды өз қалауыңызға қарай өзгертіңіз.": "Kişi sayısını, yemekleri, salataları ve içecekleri isteğinize göre değiştirin.",
     "Сет түрі": "Set türü",
     "Адам саны": "Kişi sayısı",
     "Қайнатпа сорпа": "Kaynatma çorba",
@@ -735,9 +768,9 @@ const staticTranslationsAll = {
     "Тапсырыс беру": "下单",
     "Классика": "经典",
     "Бу тағамы": "蒸菜",
-    "Топпен келгенде": "团体用餐",
-    "Топтық сет есебі": "团体套餐计算",
-    "Адам санын енгізіңіз, сет құрамы автоматты есептеледі.": "输入人数，套餐内容会自动计算。",
+    "Сетті өзгерту": "修改套餐",
+    "Сетті өзіңізге ыңғайлы етіп өзгерту": "按您的需要调整套餐",
+    "Адам санын, тағамды, салатты және сусынды өз қалауыңызға қарай өзгертіңіз.": "可按需更改人数、菜品、沙拉和饮料。",
     "Сет түрі": "套餐类型",
     "Адам саны": "人数",
     "Қайнатпа сорпа": "清汤",
@@ -788,9 +821,9 @@ const staticTranslationsAll = {
     "Тапсырыс беру": "Буйрутма берүү",
     "Классика": "Классика",
     "Бу тағамы": "Бууга бышкан тамак",
-    "Топпен келгенде": "Топ менен келгенде",
-    "Топтық сет есебі": "Топтук сет эсеби",
-    "Адам санын енгізіңіз, сет құрамы автоматты есептеледі.": "Адам санын киргизиңиз, сет курамы автоматтык эсептелет.",
+    "Сетті өзгерту": "Сетти өзгөртүү",
+    "Сетті өзіңізге ыңғайлы етіп өзгерту": "Сетти өзүңүзгө ыңгайлуу кылып өзгөртүңүз",
+    "Адам санын, тағамды, салатты және сусынды өз қалауыңызға қарай өзгертіңіз.": "Адам санын, тамакты, салатты жана суусундукту каалооңузга жараша өзгөртүңүз.",
     "Сет түрі": "Сет түрү",
     "Адам саны": "Адам саны",
     "Қайнатпа сорпа": "Кайнатма шорпо",
@@ -841,9 +874,9 @@ const staticTranslationsAll = {
     "Тапсырыс беру": "Buyurtma berish",
     "Классика": "Klassika",
     "Бу тағамы": "Bug'da pishgan taom",
-    "Топпен келгенде": "Guruh bilan kelganda",
-    "Топтық сет есебі": "Guruh set hisobi",
-    "Адам санын енгізіңіз, сет құрамы автоматты есептеледі.": "Kishi sonini kiriting, set tarkibi avtomatik hisoblanadi.",
+    "Сетті өзгерту": "Setni o'zgartirish",
+    "Сетті өзіңізге ыңғайлы етіп өзгерту": "Setni o'zingizga qulay qilib o'zgartiring",
+    "Адам санын, тағамды, салатты және сусынды өз қалауыңызға қарай өзгертіңіз.": "Kishi soni, taomlar, salatlar va ichimliklarni xohishingizga qarab o'zgartiring.",
     "Сет түрі": "Set turi",
     "Адам саны": "Kishi soni",
     "Қайнатпа сорпа": "Qaynatma sho'rva",
@@ -908,6 +941,7 @@ Object.assign(staticTranslationsAll.tr, {
   "сағ:мин": "ss:dd",
   "9 қабат терраса - аренда 20 000 ₸": "9. kat teras - kira 20 000 ₸",
   "1 қабат Урбо кофейня - аренда 0 ₸": "1. kat Urbo kahve - kira 0 ₸",
+  "Орынсыз - аренда 0 ₸": "Yersiz - kira 0 ₸",
   "Тапсырыс парағы": "Sipariş formu",
   "әлі жазылмады": "henüz yazılmadı",
   "әлі таңдалмады": "henüz seçilmedi",
@@ -964,6 +998,7 @@ Object.assign(staticTranslationsAll.zh, {
   "сағ:мин": "时:分",
   "9 қабат терраса - аренда 20 000 ₸": "9楼露台 - 租金 20 000 ₸",
   "1 қабат Урбо кофейня - аренда 0 ₸": "1楼 Urbo 咖啡馆 - 租金 0 ₸",
+  "Орынсыз - аренда 0 ₸": "无座位 - 租金 0 ₸",
   "Тапсырыс парағы": "订单表",
   "әлі жазылмады": "尚未填写",
   "әлі таңдалмады": "尚未选择",
@@ -1017,6 +1052,7 @@ Object.assign(staticTranslationsAll.ky, {
   "сағ:мин": "саат:мүн",
   "9 қабат терраса - аренда 20 000 ₸": "9-кабат терраса - аренда 20 000 ₸",
   "1 қабат Урбо кофейня - аренда 0 ₸": "1-кабат Урбо кофейня - аренда 0 ₸",
+  "Орынсыз - аренда 0 ₸": "Орунсуз - аренда 0 ₸",
   "Тапсырыс парағы": "Буйрутма барагы",
   "әлі жазылмады": "али жазылган жок",
   "әлі таңдалмады": "али тандалган жок",
@@ -1069,6 +1105,7 @@ Object.assign(staticTranslationsAll.uz, {
   "сағ:мин": "ss:dd",
   "9 қабат терраса - аренда 20 000 ₸": "9-qavat terrasa - ijara 20 000 ₸",
   "1 қабат Урбо кофейня - аренда 0 ₸": "1-qavat Urbo qahvaxonasi - ijara 0 ₸",
+  "Орынсыз - аренда 0 ₸": "Joysiz - ijara 0 ₸",
   "Тапсырыс парағы": "Buyurtma varaqasi",
   "әлі жазылмады": "hali yozilmadi",
   "әлі таңдалмады": "hali tanlanmadi",
@@ -1080,6 +1117,90 @@ Object.assign(staticTranslationsAll.uz, {
   "Сусындар": "Ichimliklar",
   "Толық бағасы": "To'liq narxi",
   "Жоғарыдағы тапсырыстарға толықтай келісемін.": "Yuqoridagi buyurtmalarga to'liq roziman.",
+});
+
+Object.assign(staticTranslationsAll.ru, {
+  "8 қабат": "8 этаж",
+  "Аренда. 8 қабат": "Аренда. 8 этаж",
+  "8 қабат аренда уақыты": "Время аренды 8 этажа",
+  "1 сағат - 20 000 ₸": "1 час - 20 000 ₸",
+  "2 сағат - 30 000 ₸": "2 часа - 30 000 ₸",
+  "3 сағат - 40 000 ₸": "3 часа - 40 000 ₸",
+  "Безлимит - 50 000 ₸": "Безлимит - 50 000 ₸",
+  "Қону": "Проживание",
+  "Қонуға қай күні келеді": "Дата заезда",
+  "Қай күні қайтады": "Дата выезда",
+  "Қай сағатта қайтады": "Время выезда",
+});
+
+Object.assign(staticTranslationsAll.en, {
+  "8 қабат": "8th floor",
+  "Аренда. 8 қабат": "Rent. 8th floor",
+  "8 қабат аренда уақыты": "8th floor rental time",
+  "1 сағат - 20 000 ₸": "1 hour - 20 000 ₸",
+  "2 сағат - 30 000 ₸": "2 hours - 30 000 ₸",
+  "3 сағат - 40 000 ₸": "3 hours - 40 000 ₸",
+  "Безлимит - 50 000 ₸": "Unlimited - 50 000 ₸",
+  "Қону": "Stay",
+  "Қонуға қай күні келеді": "Stay arrival date",
+  "Қай күні қайтады": "Return date",
+  "Қай сағатта қайтады": "Return time",
+});
+
+Object.assign(staticTranslationsAll.uz, {
+  "8 қабат": "8-qavat",
+  "Аренда. 8 қабат": "Ijara. 8-qavat",
+  "8 қабат аренда уақыты": "8-qavat ijara vaqti",
+  "1 сағат - 20 000 ₸": "1 soat - 20 000 ₸",
+  "2 сағат - 30 000 ₸": "2 soat - 30 000 ₸",
+  "3 сағат - 40 000 ₸": "3 soat - 40 000 ₸",
+  "Безлимит - 50 000 ₸": "Cheksiz - 50 000 ₸",
+  "Қону": "Tunash",
+  "Қонуға қай күні келеді": "Tunashga keladigan kuni",
+  "Қай күні қайтады": "Qaytadigan kuni",
+  "Қай сағатта қайтады": "Qaytadigan vaqti",
+});
+
+Object.assign(staticTranslationsAll.tr, {
+  "8 қабат": "8. kat",
+  "Аренда. 8 қабат": "Kira. 8. kat",
+  "8 қабат аренда уақыты": "8. kat kira süresi",
+  "1 сағат - 20 000 ₸": "1 saat - 20 000 ₸",
+  "2 сағат - 30 000 ₸": "2 saat - 30 000 ₸",
+  "3 сағат - 40 000 ₸": "3 saat - 40 000 ₸",
+  "Безлимит - 50 000 ₸": "Limitsiz - 50 000 ₸",
+  "Қону": "Konaklama",
+  "Қонуға қай күні келеді": "Konaklama geliş tarihi",
+  "Қай күні қайтады": "Çıkış tarihi",
+  "Қай сағатта қайтады": "Çıkış saati",
+});
+
+Object.assign(staticTranslationsAll.zh, {
+  "8 қабат": "8楼",
+  "Аренда. 8 қабат": "租金. 8楼",
+  "8 қабат аренда уақыты": "8楼租赁时间",
+  "1 сағат - 20 000 ₸": "1小时 - 20 000 ₸",
+  "2 сағат - 30 000 ₸": "2小时 - 30 000 ₸",
+  "3 сағат - 40 000 ₸": "3小时 - 40 000 ₸",
+  "Безлимит - 50 000 ₸": "不限时 - 50 000 ₸",
+  "Қону": "住宿",
+  "Қонуға қай күні келеді": "入住日期",
+  "Қай күні қайтады": "离店日期",
+  "Қай сағатта қайтады": "离店时间",
+});
+
+Object.assign(staticTranslationsAll.ky, {
+  "8 қабат": "8-кабат",
+  "Аренда. 8 қабат": "Аренда. 8-кабат",
+  "8 қабат аренда уақыты": "8-кабат аренда убактысы",
+  "1 сағат - 20 000 ₸": "1 саат - 20 000 ₸",
+  "2 сағат - 30 000 ₸": "2 саат - 30 000 ₸",
+  "3 сағат - 40 000 ₸": "3 саат - 40 000 ₸",
+  "Безлимит - 50 000 ₸": "Чексиз - 50 000 ₸",
+  "Қону": "Конуу",
+  "Қонуға қай күні келеді": "Конууга келе турган күнү",
+  "Қай күні қайтады": "Кайта турган күнү",
+  "Қай сағатта қайтады": "Кайта турган сааты",
 });
 
 const reverseStaticTranslations = Object.fromEntries(
@@ -1289,10 +1410,17 @@ const prices = {
   plov: 2500,
   manty: 450,
   samsa: 450,
+  nan: 400,
   drinkBottle: 1000,
   baursakKg: 1200,
   terraceRent: 20000,
   urboRent: 0,
+  floor8Rent: {
+    "1": 20000,
+    "2": 30000,
+    "3": 40000,
+    unlimited: 50000,
+  },
 };
 
 cards.forEach((card) => {
@@ -1401,17 +1529,84 @@ function clampPeople(value) {
 }
 
 function getVenueDetails() {
+  if (orderVenue.value === "none") {
+    return {
+      name: c("noVenue"),
+      rent: 0,
+      type: "none",
+    };
+  }
+
   if (orderVenue.value === "urbo") {
     return {
       name: c("urbo"),
       rent: prices.urboRent,
+      type: "urbo",
+    };
+  }
+
+  if (orderVenue.value === "floor8") {
+    const duration = orderRentDuration?.value || "1";
+    return {
+      name: `${translateText("8 қабат")} (${getRentDurationLabel(duration)})`,
+      rent: prices.floor8Rent[duration] || prices.floor8Rent["1"],
+      type: "floor8",
+      duration,
     };
   }
 
   return {
     name: c("terrace"),
     rent: prices.terraceRent,
+    type: "terrace",
   };
+}
+
+function getRentDurationLabel(value) {
+  const labels = {
+    kk: { "1": "1 сағат", "2": "2 сағат", "3": "3 сағат", unlimited: "Безлимит" },
+    ru: { "1": "1 час", "2": "2 часа", "3": "3 часа", unlimited: "Безлимит" },
+    en: { "1": "1 hour", "2": "2 hours", "3": "3 hours", unlimited: "Unlimited" },
+    uz: { "1": "1 soat", "2": "2 soat", "3": "3 soat", unlimited: "Cheksiz" },
+    tr: { "1": "1 saat", "2": "2 saat", "3": "3 saat", unlimited: "Limitsiz" },
+    zh: { "1": "1小时", "2": "2小时", "3": "3小时", unlimited: "不限时" },
+    ky: { "1": "1 саат", "2": "2 саат", "3": "3 саат", unlimited: "Чексиз" },
+  };
+
+  return labels[currentLang]?.[value] || labels.kk[value] || labels.kk["1"];
+}
+
+function getRentLabel(venue) {
+  if (venue.type === "terrace") return c("terraceRent");
+  if (venue.type === "urbo") return c("urboRent");
+  if (venue.type === "floor8") return translateText("Аренда. 8 қабат");
+  return c("noVenueRent");
+}
+
+function getLodgingDetails(venue = getVenueDetails()) {
+  const enabled = venue.type === "floor8";
+  return {
+    enabled,
+    arrivalDate: enabled && lodgingArrivalDate?.value ? lodgingArrivalDate.value : c("missingSelected"),
+    returnDate: enabled && lodgingReturnDate?.value ? lodgingReturnDate.value : c("missingSelected"),
+    returnTime: enabled && lodgingReturnTime?.value ? lodgingReturnTime.value : c("missingSelected"),
+  };
+}
+
+function updateRentDurationVisibility() {
+  const show = orderVenue.value === "floor8" || calcVenue.value === "floor8";
+  rentDurationControls.forEach((control) => {
+    control.classList.toggle("is-hidden", !show);
+  });
+  lodgingControls.forEach((control) => {
+    control.classList.toggle("is-hidden", !show);
+  });
+  lodgingRows.forEach((row) => {
+    row.classList.toggle("is-hidden", !show);
+  });
+  calculatorControls?.classList.toggle("rent-duration-visible", show);
+  orderDetails?.classList.toggle("rent-duration-visible", show);
+  orderDetails?.classList.toggle("lodging-visible", show);
 }
 
 function getTomorrowDateValue() {
@@ -1434,6 +1629,7 @@ function formatTimeInput(value) {
 }
 
 function updateGroupSet() {
+  updateRentDurationVisibility();
   const people = clampPeople(peopleCount.value);
   peopleCount.value = people;
   orderPeople.value = people;
@@ -1445,6 +1641,7 @@ function updateGroupSet() {
   const drinkSets = Math.ceil(people / 4);
   syncDrinkQuantity(drinkSets);
   const drinkLiters = calculateDrinkLiters();
+  const nanPieces = Math.ceil(people / 6);
   const baursakKg = Math.ceil(people / 12);
   const saladPlates = Math.ceil(people / 2);
   const actualSaladPlates = manualSaladPlates ?? saladPlates;
@@ -1466,10 +1663,11 @@ function updateGroupSet() {
     },
   };
   const main = setRules[selectedSet];
-  syncBaseFoods({ selectedSet, people, samsaPieces, baursakKg });
+  syncBaseFoods({ selectedSet, people, samsaPieces, nanPieces, baursakKg });
   const totals = calculateTotals({
     people,
     samsaPieces,
+    nanPieces,
     drinkSets,
     baursakKg,
     saladPlates: actualSaladPlates,
@@ -1490,6 +1688,7 @@ function updateGroupSet() {
   menuPlovSummary.textContent = `${people} ${c("person")} · ${formatTenge(totals.plov)}`;
   menuMantySummary.textContent = `${people} ${c("person")} · ${formatTenge(totals.manty)}`;
   updateRentRows();
+  renderMenuSetLists({ people, baursakKg });
   updateOrderBox({ people, totals });
 }
 
@@ -1499,6 +1698,7 @@ function updateOrderBox({ people, totals }) {
   const dateText = orderDate.value ? orderDate.value : c("missingSelected");
   const timeText = orderTime.value ? orderTime.value : c("missingSelected");
   const venue = getVenueDetails();
+  const lodging = getLodgingDetails(venue);
   const rentText = formatTenge(venue.rent);
 
   if (!selectedOrderSet) {
@@ -1510,6 +1710,7 @@ function updateOrderBox({ people, totals }) {
       dateText,
       timeText,
       venue,
+      lodging,
       rentText,
       totalText: "0 ₸",
     }));
@@ -1525,6 +1726,7 @@ function updateOrderBox({ people, totals }) {
       dateText,
       timeText,
       venue,
+      lodging,
       rentText,
       totalText: "0 ₸",
     });
@@ -1545,6 +1747,7 @@ function updateOrderBox({ people, totals }) {
     dateText,
     timeText,
     venue,
+    lodging,
     rentText,
     totalText: total,
   }));
@@ -1560,6 +1763,7 @@ function updateOrderBox({ people, totals }) {
     dateText,
     timeText,
     venue,
+    lodging,
     rentText,
     totalText: total,
   });
@@ -1614,8 +1818,17 @@ function isMissingValue(value) {
   ].some((prefix) => value.startsWith(prefix));
 }
 
-function buildWhatsAppOrderText({ nameText, phoneText, setText, people, dateText, timeText, venue, rentText, totalText }) {
+function buildWhatsAppOrderText({ nameText, phoneText, setText, people, dateText, timeText, venue, lodging, rentText, totalText }) {
   const section = (title, value) => `${title}:\n${value}`;
+  const lodgingLines = lodging?.enabled
+    ? [
+        "",
+        "қону",
+        `${translateText("Қонуға қай күні келеді")}: ${formatWhatsAppValue(lodging.arrivalDate)}`,
+        `${translateText("Қай күні қайтады")}: ${formatWhatsAppValue(lodging.returnDate)}`,
+        `${translateText("Қай сағатта қайтады")}: ${formatWhatsAppValue(lodging.returnTime)}`,
+      ]
+    : [];
 
   return [
     c("greeting"),
@@ -1631,6 +1844,7 @@ function buildWhatsAppOrderText({ nameText, phoneText, setText, people, dateText
     `${c("arrivalTime")}: ${formatWhatsAppValue(timeText)}`,
     `${c("venue")}: ${venue.name}`,
     `${c("rent")}: ${rentText}`,
+    ...lodgingLines,
     "",
     section(c("setFoods"), formatCollectionForPdf(foods)),
     section(c("addFood"), formatChangedCollectionForPdf(foods, baselineFoodQuantities)),
@@ -1649,7 +1863,7 @@ function buildWhatsAppOrderText({ nameText, phoneText, setText, people, dateText
   ].join("\n");
 }
 
-function updatePdfSummary({ nameText, phoneText, setText, people, dateText, timeText, venue, rentText, totalText }) {
+function updatePdfSummary({ nameText, phoneText, setText, people, dateText, timeText, venue, lodging, rentText, totalText }) {
   setPdfValue(pdfClientName, nameText);
   setPdfValue(pdfClientPhone, phoneText);
   setPdfValue(pdfSetName, setText);
@@ -1658,6 +1872,9 @@ function updatePdfSummary({ nameText, phoneText, setText, people, dateText, time
   setPdfValue(pdfTime, timeText);
   setPdfValue(pdfVenue, venue.name);
   setPdfValue(pdfRent, rentText);
+  setPdfValue(pdfLodgingArrival, lodging?.arrivalDate || c("missingSelected"));
+  setPdfValue(pdfLodgingReturnDate, lodging?.returnDate || c("missingSelected"));
+  setPdfValue(pdfLodgingReturnTime, lodging?.returnTime || c("missingSelected"));
   setPdfValue(pdfFoods, formatCollectionForPdf(foods));
   setPdfChangeValue(pdfAddedFoods, formatChangedCollectionForPdf(foods, baselineFoodQuantities));
   setPdfChangeValue(pdfRemovedFoods, formatRemovedCollectionForPdf(removedFoods));
@@ -1682,14 +1899,113 @@ function setPdfChangeValue(element, value) {
 
 function updateRentRows() {
   const venue = getVenueDetails();
-  const isTerrace = orderVenue.value !== "urbo";
-  const label = isTerrace ? c("terraceRent") : c("urboRent");
+  const label = getRentLabel(venue);
 
   rentRows.forEach((row) => {
-    row.classList.toggle("is-highlighted", isTerrace);
+    row.classList.toggle("is-highlighted", venue.rent > 0);
     row.querySelector("dt").textContent = label;
     row.querySelector("dd").textContent = formatTenge(venue.rent);
   });
+}
+
+function renderMenuSetLists({ people, baursakKg }) {
+  const configs = [
+    { key: "kebab", list: menuKebabList, mainId: "base-main-kebab", mainName: "Қазан-кебап", price: prices.kebab, unit: c("portion"), quantity: people },
+    { key: "plov", list: menuPlovList, mainId: "base-main-plov", mainName: "Плов", price: prices.plov, unit: c("portion"), quantity: people },
+    { key: "manty", list: menuMantyList, mainId: "base-main-manty", mainName: "Манты шт", price: prices.manty, unit: c("sht"), quantity: people * 4 },
+  ];
+
+  configs.forEach((config) => {
+    renderOneMenuSetList(config, { people, baursakKg });
+  });
+}
+
+function renderOneMenuSetList(config, { people, baursakKg }) {
+  if (!config.list) return;
+  config.list.innerHTML = "";
+
+  const venue = getVenueDetails();
+  const rentLabel = getRentLabel(venue);
+  createMenuRow(config.list, rentLabel, formatTenge(venue.rent), {
+    highlight: venue.rent > 0,
+  });
+
+  const soup = foods.find((food) => food.id === "base-soup");
+  if (soup) createFoodMenuRow(config.list, soup);
+
+  const activeMain = foods.find((food) => food.id === config.mainId);
+  if (config.key === setType.value && activeMain) {
+    createFoodMenuRow(config.list, activeMain);
+  } else if (config.key !== setType.value) {
+    createFoodMenuRow(config.list, {
+      id: config.mainId,
+      name: config.mainName,
+      price: config.price,
+      quantity: config.quantity,
+      unit: config.unit,
+    });
+  }
+
+  const samsa = foods.find((food) => food.id === "base-samsa");
+  if (samsa) createFoodMenuRow(config.list, samsa);
+
+  const nan = foods.find((food) => food.id === "base-nan");
+  if (nan) createFoodMenuRow(config.list, nan);
+
+  const baursak = foods.find((food) => food.id === "base-baursak") || {
+    name: "Бауырсақ 1 кг",
+    price: prices.baursakKg,
+    quantity: baursakKg,
+    unit: c("kg"),
+  };
+  createFoodMenuRow(config.list, baursak);
+
+  foods
+    .filter((food) => !food.id.startsWith("base-"))
+    .forEach((food) => createFoodMenuRow(config.list, food, true));
+
+  salads.forEach((salad) => {
+    createMenuRow(
+      config.list,
+      displayName(salad.name),
+      `${salad.quantity} ${c("plate")} · ${formatTenge(salad.price || 0)}`,
+      { changed: customSaladIds.has(salad.id) },
+    );
+  });
+
+  drinks.forEach((drink) => {
+    createMenuRow(
+      config.list,
+      displayName(drink.name),
+      `${drink.quantity} ${c("sht")} · ${formatTenge(drink.price || 0)}`,
+      { changed: customDrinkIds.has(drink.id) },
+    );
+  });
+
+  createMenuRow(config.list, translateText("Шай"), formatTenge(1500));
+}
+
+function createFoodMenuRow(list, food, forceChanged = false) {
+  const unit = translateText(food.unit || c("piece"));
+  const isChanged = forceChanged || customFoodIds.has(food.id);
+  createMenuRow(list, displayName(food.name), `${food.quantity} ${unit} · ${formatTenge(food.price || 0)}`, {
+    changed: isChanged,
+  });
+}
+
+function createMenuRow(list, label, value, options = {}) {
+  const row = document.createElement("div");
+  if (options.highlight) row.classList.add("rent-row", "is-highlighted");
+  if (options.changed) row.classList.add("is-custom");
+
+  const dt = document.createElement("dt");
+  dt.textContent = label;
+
+  const dd = document.createElement("dd");
+  dd.textContent = value;
+
+  row.append(dt, dd);
+  list.append(row);
 }
 
 function syncSaladQuantity(plateCount) {
@@ -1776,11 +2092,12 @@ function getFoodSummary() {
   return [...activeChanges, ...removedChanges].join(", ");
 }
 
-function calculateTotals({ people, samsaPieces, drinkSets, baursakKg, saladPlates }) {
+function calculateTotals({ people, samsaPieces, nanPieces, drinkSets, baursakKg, saladPlates }) {
   const rent = getVenueDetails().rent;
   const sharedTotal =
     people * prices.soup +
     samsaPieces * prices.samsa +
+    nanPieces * prices.nan +
     calculateDrinkTotal() +
     baursakKg * prices.baursakKg +
     calculateSaladTotal() +
@@ -1815,7 +2132,7 @@ function rememberBaseline(collection, target) {
   });
 }
 
-function getBaseFoodTemplate({ selectedSet, people, samsaPieces, baursakKg }) {
+function getBaseFoodTemplate({ selectedSet, people, samsaPieces, nanPieces, baursakKg }) {
   const mainFoods = {
     kebab: {
       id: "base-main-kebab",
@@ -1857,6 +2174,13 @@ function getBaseFoodTemplate({ selectedSet, people, samsaPieces, baursakKg }) {
       unit: "шт",
     },
     {
+      id: "base-nan",
+      name: "Нан",
+      price: prices.nan,
+      quantity: nanPieces,
+      unit: "шт",
+    },
+    {
       id: "base-baursak",
       name: "Бауырсақ 1 кг",
       price: prices.baursakKg,
@@ -1866,11 +2190,11 @@ function getBaseFoodTemplate({ selectedSet, people, samsaPieces, baursakKg }) {
   ].filter(Boolean);
 }
 
-function syncBaseFoods({ selectedSet, people, samsaPieces, baursakKg }) {
-  const templateKey = `${selectedSet}:${people}:${samsaPieces}:${baursakKg}`;
+function syncBaseFoods({ selectedSet, people, samsaPieces, nanPieces, baursakKg }) {
+  const templateKey = `${selectedSet}:${people}:${samsaPieces}:${nanPieces}:${baursakKg}`;
   if (templateKey === lastFoodTemplateKey) return;
 
-  const defaults = getBaseFoodTemplate({ selectedSet, people, samsaPieces, baursakKg });
+  const defaults = getBaseFoodTemplate({ selectedSet, people, samsaPieces, nanPieces, baursakKg });
   const defaultIds = new Set(defaults.map((food) => food.id));
   const currentExtras = foods.filter((food) => !food.id.startsWith("base-"));
   const removedExtras = removedFoods.filter((food) => !food.id.startsWith("base-"));
@@ -1895,6 +2219,41 @@ function refreshCustomState(collection, baseline, customIds) {
       customIds.add(item.id);
     }
   });
+}
+
+function createQuantityField({ value, label, onCommit }) {
+  const wrap = document.createElement("label");
+  wrap.className = "qty-manual";
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.inputMode = "numeric";
+  input.value = value;
+  input.setAttribute("aria-label", label);
+
+  input.addEventListener("input", () => {
+    const digits = input.value.replace(/\D/g, "").slice(0, 3);
+    const parsed = Number.parseInt(digits, 10);
+    input.value = Number.isNaN(parsed) ? "" : String(Math.min(parsed, 999));
+  });
+
+  const commit = () => {
+    const parsed = Number.parseInt(input.value, 10);
+    onCommit(Number.isNaN(parsed) ? 0 : Math.min(parsed, 999));
+  };
+
+  input.addEventListener("change", commit);
+  input.addEventListener("blur", commit);
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      input.blur();
+    }
+  });
+
+  wrap.append(input);
+
+  return wrap;
 }
 
 function renderSalads() {
@@ -1940,8 +2299,26 @@ function renderSalads() {
       updateGroupSet();
     });
 
-    const quantity = document.createElement("span");
-    quantity.textContent = salad.quantity;
+    const quantity = createQuantityField({
+      value: salad.quantity,
+      label: `${displayName(salad.name)} саны`,
+      onCommit: (nextQuantity) => {
+        if (!salads[index]) return;
+        customSaladIds.add(salads[index].id);
+        salads[index].quantity = Math.max(0, nextQuantity);
+        if (salads[index].quantity === 0) {
+          const restoredQuantity = baselineSaladQuantities[salads[index].id] ?? 1;
+          removedSalads = [...removedSalads, { ...salads[index], quantity: restoredQuantity }];
+          customSaladIds.delete(salads[index].id);
+          salads = salads.filter((_, saladIndex) => saladIndex !== index);
+        }
+        manualSaladPlates = salads.reduce((sum, item) => sum + item.quantity, 0);
+        renderSalads();
+        renderRemovedSalads();
+        renderSaladMenu();
+        updateGroupSet();
+      },
+    });
 
     const plus = document.createElement("button");
     plus.type = "button";
@@ -1949,7 +2326,7 @@ function renderSalads() {
     plus.setAttribute("aria-label", `${displayName(salad.name)} санын көбейту`);
     plus.addEventListener("click", () => {
       customSaladIds.add(salads[index].id);
-      salads[index].quantity += 1;
+      salads[index].quantity = Math.min(999, salads[index].quantity + 1);
       manualSaladPlates = salads.reduce((sum, item) => sum + item.quantity, 0);
       renderSalads();
       updateGroupSet();
@@ -2004,8 +2381,25 @@ function renderDrinks() {
       updateGroupSet();
     });
 
-    const quantity = document.createElement("span");
-    quantity.textContent = drink.quantity;
+    const quantity = createQuantityField({
+      value: drink.quantity,
+      label: `${displayName(drink.name)} саны`,
+      onCommit: (nextQuantity) => {
+        if (!drinks[index]) return;
+        customDrinkIds.add(drinks[index].id);
+        drinks[index].quantity = Math.max(0, nextQuantity);
+        if (drinks[index].quantity === 0) {
+          const restoredQuantity = baselineDrinkQuantities[drinks[index].id] ?? 1;
+          removedDrinks = [...removedDrinks, { ...drinks[index], quantity: restoredQuantity }];
+          customDrinkIds.delete(drinks[index].id);
+          drinks = drinks.filter((_, drinkIndex) => drinkIndex !== index);
+        }
+        renderDrinks();
+        renderRemovedDrinks();
+        renderDrinkMenu();
+        updateGroupSet();
+      },
+    });
 
     const plus = document.createElement("button");
     plus.type = "button";
@@ -2013,7 +2407,7 @@ function renderDrinks() {
     plus.setAttribute("aria-label", `${displayName(drink.name)} санын көбейту`);
     plus.addEventListener("click", () => {
       customDrinkIds.add(drinks[index].id);
-      drinks[index].quantity += 1;
+      drinks[index].quantity = Math.min(999, drinks[index].quantity + 1);
       renderDrinks();
       updateGroupSet();
     });
@@ -2125,8 +2519,25 @@ function renderFoods() {
       updateGroupSet();
     });
 
-    const quantity = document.createElement("span");
-    quantity.textContent = `${food.quantity} ${translateText(food.unit || c("piece"))}`;
+    const quantity = createQuantityField({
+      value: food.quantity,
+      label: `${displayName(food.name)} саны`,
+      onCommit: (nextQuantity) => {
+        if (!foods[index]) return;
+        customFoodIds.add(foods[index].id);
+        foods[index].quantity = Math.max(0, nextQuantity);
+        if (foods[index].quantity === 0) {
+          const restoredQuantity = baselineFoodQuantities[foods[index].id] ?? 1;
+          removedFoods = [...removedFoods, { ...foods[index], quantity: restoredQuantity }];
+          customFoodIds.delete(foods[index].id);
+          foods = foods.filter((_, foodIndex) => foodIndex !== index);
+        }
+        renderFoods();
+        renderRemovedFoods();
+        renderFoodMenu();
+        updateGroupSet();
+      },
+    });
 
     const plus = document.createElement("button");
     plus.type = "button";
@@ -2134,7 +2545,7 @@ function renderFoods() {
     plus.setAttribute("aria-label", `${displayName(food.name)} санын көбейту`);
     plus.addEventListener("click", () => {
       customFoodIds.add(foods[index].id);
-      foods[index].quantity += 1;
+      foods[index].quantity = Math.min(999, foods[index].quantity + 1);
       renderFoods();
       updateGroupSet();
     });
@@ -2289,9 +2700,45 @@ orderTime.addEventListener("input", () => {
   orderTime.value = formatTimeInput(orderTime.value);
   updateGroupSet();
 });
+lodgingArrivalDate?.addEventListener("input", () => {
+  lodgingArrivalDate.value = formatDateInput(lodgingArrivalDate.value);
+  updateGroupSet();
+});
+lodgingReturnDate?.addEventListener("input", () => {
+  lodgingReturnDate.value = formatDateInput(lodgingReturnDate.value);
+  updateGroupSet();
+});
+lodgingReturnTime?.addEventListener("input", () => {
+  lodgingReturnTime.value = formatTimeInput(lodgingReturnTime.value);
+  updateGroupSet();
+});
 orderDate.addEventListener("change", updateGroupSet);
 orderTime.addEventListener("change", updateGroupSet);
-orderVenue.addEventListener("change", updateGroupSet);
+lodgingArrivalDate?.addEventListener("change", updateGroupSet);
+lodgingReturnDate?.addEventListener("change", updateGroupSet);
+lodgingReturnTime?.addEventListener("change", updateGroupSet);
+calcVenue.addEventListener("change", () => {
+  orderVenue.value = calcVenue.value;
+  updateRentDurationVisibility();
+  syncCustomSelects();
+  updateGroupSet();
+});
+orderVenue.addEventListener("change", () => {
+  calcVenue.value = orderVenue.value;
+  updateRentDurationVisibility();
+  syncCustomSelects();
+  updateGroupSet();
+});
+calcRentDuration?.addEventListener("change", () => {
+  orderRentDuration.value = calcRentDuration.value;
+  syncCustomSelects();
+  updateGroupSet();
+});
+orderRentDuration?.addEventListener("change", () => {
+  calcRentDuration.value = orderRentDuration.value;
+  syncCustomSelects();
+  updateGroupSet();
+});
 peopleCount.addEventListener("input", () => {
   manualSamsaPlates = null;
   manualSaladPlates = null;
@@ -2441,7 +2888,7 @@ rememberBaseline(drinks, baselineDrinkQuantities);
 rememberBaseline(foods, baselineFoodQuantities);
 orderPeople.value = clampPeople(peopleCount.value);
 orderDate.min = getTomorrowDateValue();
-[setType, orderSetSelect].forEach(enhanceSetSelect);
+[setType, calcVenue, calcRentDuration, orderSetSelect].filter(Boolean).forEach(enhanceSetSelect);
 applyLanguage();
 syncCustomSelects();
 renderSalads();
@@ -2454,3 +2901,4 @@ renderFoods();
 renderRemovedFoods();
 renderFoodMenu();
 updateGroupSet();
+
