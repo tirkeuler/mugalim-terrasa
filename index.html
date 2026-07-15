@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <div class="beta-ticker" role="status" aria-label="Beta ескерту">
+      <div class="beta-ticker-track">
+        <span>⚠️ Назар аударыңыз! Сайт қазіргі уақытта Beta-нұсқада жұмыс істейді. Кейбір бөлімдер мен мүмкіндіктер әлі де жетілдірілуде.</span>
+        <span aria-hidden="true">⚠️ Назар аударыңыз! Сайт қазіргі уақытта Beta-нұсқада жұмыс істейді. Кейбір бөлімдер мен мүмкіндіктер әлі де жетілдірілуде.</span>
+      </div>
+    </div>
     <header class="topbar">
       <a class="brand" href="#top" aria-label="Басты бет">
         <span class="brand-mark">M</span>
@@ -130,11 +136,15 @@
             </label>
           </div>
           <div class="lodging-control calc-lodging-panel is-hidden">
-            <strong>қону</strong>
+            <strong>Қону</strong>
             <div>
               <label for="lodging-arrival-date">
                 <span>Қонуға қай күні келеді</span>
                 <input id="lodging-arrival-date" type="text" inputmode="numeric" maxlength="10" placeholder="кк.аа.жжжж" />
+              </label>
+              <label for="lodging-arrival-time">
+                <span>Қай уақытта келеді</span>
+                <input id="lodging-arrival-time" type="text" inputmode="numeric" maxlength="5" placeholder="сағ:мин" />
               </label>
               <label for="lodging-return-date">
                 <span>Қай күні қайтады</span>
@@ -399,6 +409,7 @@
           <div><dt>Отыратын орын</dt><dd id="pdf-venue">9 қабат терраса</dd></div>
           <div><dt>Аренда</dt><dd id="pdf-rent">20 000 ₸</dd></div>
           <div class="lodging-row is-hidden"><dt>Қонуға қай күні келеді</dt><dd id="pdf-lodging-arrival">әлі таңдалмады</dd></div>
+          <div class="lodging-row is-hidden"><dt>Қай уақытта келеді</dt><dd id="pdf-lodging-arrival-time">әлі таңдалмады</dd></div>
           <div class="lodging-row is-hidden"><dt>Қай күні қайтады</dt><dd id="pdf-lodging-return-date">әлі таңдалмады</dd></div>
           <div class="lodging-row is-hidden"><dt>Қай сағатта қайтады</dt><dd id="pdf-lodging-return-time">әлі таңдалмады</dd></div>
           <div><dt>Сет ішіндегі тағамдар</dt><dd id="pdf-foods">-</dd></div>

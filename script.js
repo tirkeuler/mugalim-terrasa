@@ -16,6 +16,7 @@ const rentDurationControls = document.querySelectorAll(".rent-duration-control")
 const lodgingControls = document.querySelectorAll(".lodging-control");
 const lodgingRows = document.querySelectorAll(".lodging-row");
 const lodgingArrivalDate = document.querySelector("#lodging-arrival-date");
+const lodgingArrivalTime = document.querySelector("#lodging-arrival-time");
 const lodgingReturnDate = document.querySelector("#lodging-return-date");
 const lodgingReturnTime = document.querySelector("#lodging-return-time");
 const calculatorControls = document.querySelector(".calculator-controls");
@@ -29,6 +30,7 @@ const pdfTime = document.querySelector("#pdf-time");
 const pdfVenue = document.querySelector("#pdf-venue");
 const pdfRent = document.querySelector("#pdf-rent");
 const pdfLodgingArrival = document.querySelector("#pdf-lodging-arrival");
+const pdfLodgingArrivalTime = document.querySelector("#pdf-lodging-arrival-time");
 const pdfLodgingReturnDate = document.querySelector("#pdf-lodging-return-date");
 const pdfLodgingReturnTime = document.querySelector("#pdf-lodging-return-time");
 const pdfFoods = document.querySelector("#pdf-foods");
@@ -1588,6 +1590,7 @@ function getLodgingDetails(venue = getVenueDetails()) {
   return {
     enabled,
     arrivalDate: enabled && lodgingArrivalDate?.value ? lodgingArrivalDate.value : c("missingSelected"),
+    arrivalTime: enabled && lodgingArrivalTime?.value ? lodgingArrivalTime.value : c("missingSelected"),
     returnDate: enabled && lodgingReturnDate?.value ? lodgingReturnDate.value : c("missingSelected"),
     returnTime: enabled && lodgingReturnTime?.value ? lodgingReturnTime.value : c("missingSelected"),
   };
@@ -1825,6 +1828,7 @@ function buildWhatsAppOrderText({ nameText, phoneText, setText, people, dateText
         "",
         "қону",
         `${translateText("Қонуға қай күні келеді")}: ${formatWhatsAppValue(lodging.arrivalDate)}`,
+        `${translateText("Қай уақытта келеді")}: ${formatWhatsAppValue(lodging.arrivalTime)}`,
         `${translateText("Қай күні қайтады")}: ${formatWhatsAppValue(lodging.returnDate)}`,
         `${translateText("Қай сағатта қайтады")}: ${formatWhatsAppValue(lodging.returnTime)}`,
       ]
@@ -1873,6 +1877,7 @@ function updatePdfSummary({ nameText, phoneText, setText, people, dateText, time
   setPdfValue(pdfVenue, venue.name);
   setPdfValue(pdfRent, rentText);
   setPdfValue(pdfLodgingArrival, lodging?.arrivalDate || c("missingSelected"));
+  setPdfValue(pdfLodgingArrivalTime, lodging?.arrivalTime || c("missingSelected"));
   setPdfValue(pdfLodgingReturnDate, lodging?.returnDate || c("missingSelected"));
   setPdfValue(pdfLodgingReturnTime, lodging?.returnTime || c("missingSelected"));
   setPdfValue(pdfFoods, formatCollectionForPdf(foods));
@@ -2704,6 +2709,10 @@ lodgingArrivalDate?.addEventListener("input", () => {
   lodgingArrivalDate.value = formatDateInput(lodgingArrivalDate.value);
   updateGroupSet();
 });
+lodgingArrivalTime?.addEventListener("input", () => {
+  lodgingArrivalTime.value = formatTimeInput(lodgingArrivalTime.value);
+  updateGroupSet();
+});
 lodgingReturnDate?.addEventListener("input", () => {
   lodgingReturnDate.value = formatDateInput(lodgingReturnDate.value);
   updateGroupSet();
@@ -2715,6 +2724,7 @@ lodgingReturnTime?.addEventListener("input", () => {
 orderDate.addEventListener("change", updateGroupSet);
 orderTime.addEventListener("change", updateGroupSet);
 lodgingArrivalDate?.addEventListener("change", updateGroupSet);
+lodgingArrivalTime?.addEventListener("change", updateGroupSet);
 lodgingReturnDate?.addEventListener("change", updateGroupSet);
 lodgingReturnTime?.addEventListener("change", updateGroupSet);
 calcVenue.addEventListener("change", () => {
