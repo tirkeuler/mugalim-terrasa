@@ -59,6 +59,1180 @@ const rentRows = document.querySelectorAll(".rent-row");
 const menuKebabSummary = document.querySelector("#menu-kebab-summary");
 const menuPlovSummary = document.querySelector("#menu-plov-summary");
 const menuMantySummary = document.querySelector("#menu-manty-summary");
+const languageButtons = document.querySelectorAll("[data-lang]");
+
+const supportedLanguages = ["kk", "ru", "en", "uz", "tr", "zh", "ky"];
+let currentLang = localStorage.getItem("mugalim-lang") || "kk";
+if (!supportedLanguages.includes(currentLang)) currentLang = "kk";
+
+const copy = {
+  kk: {
+    choose: "Таңдаңыз",
+    missingWritten: "әлі жазылмады",
+    missingSelected: "әлі таңдалмады",
+    noSet: "Сет таңдаңыз",
+    noChange: "өзгеріс жоқ",
+    empty: "Әзірге жоқ",
+    person: "адам",
+    portion: "порция",
+    piece: "дана",
+    plate: "тарелка",
+    setPack: "топтама",
+    liter: "литр",
+    kg: "кг",
+    sht: "шт",
+    perPersonOne: "адам басына 1",
+    perPersonFour: "адам басына 4 дана",
+    samsaRule: "1 тарелкада 6 дана",
+    totalPrice: "Толық бағасы",
+    rent: "Аренда",
+    deleted: "өшірілді",
+    removed: "алынды",
+    reAdd: "Қайта қосу",
+    foodsEmpty: "Сет таңдағанда тағамдар осы жерде шығады",
+    saladExists: "Бұл салат таңдалып қойылған",
+    drinkExists: "Бұл сусын таңдалып қойылған",
+    foodExists: "Бұл тағам таңдалып қойылған",
+    greeting: "Сәлеметсіз бе! Тапсырыс бергім келеді.",
+    orderSheet: "Тапсырыс парағы",
+    clientName: "Клиент есімі",
+    phoneLast: "Телефон соңғы 4 саны",
+    set: "Сет",
+    peopleCount: "Адам саны",
+    arrivalDate: "Келетін күні",
+    arrivalTime: "Келетін сағаты",
+    venue: "Отыратын орын",
+    setFoods: "Сет ішіндегі тағамдар",
+    addFood: "Сетке тағам қосу",
+    removedFoods: "Сеттен алынған тағамдар",
+    salads: "Салаттар",
+    saladMenu: "Салат менюі",
+    removedSalads: "Өшірілген салаттар",
+    drinks: "Сусындар",
+    drinkMenu: "Сусын менюі",
+    removedDrinks: "Өшірілген сусындар",
+    agreement: "Жоғарыдағы тапсырыстарға толықтай келісемін.",
+    terrace: "9 қабат терраса",
+    urbo: "1 қабат Урбо кофейня",
+    terraceRent: "Аренда. Терраса",
+    urboRent: "Аренда. Урбо",
+  },
+  ru: {
+    choose: "Выберите",
+    missingWritten: "еще не заполнено",
+    missingSelected: "еще не выбрано",
+    noSet: "Выберите сет",
+    noChange: "изменений нет",
+    empty: "Пока нет",
+    person: "человек",
+    portion: "порция",
+    piece: "шт",
+    plate: "тарелка",
+    setPack: "набор",
+    liter: "литр",
+    kg: "кг",
+    sht: "шт",
+    perPersonOne: "по 1 на человека",
+    perPersonFour: "по 4 шт на человека",
+    samsaRule: "в 1 тарелке 6 шт",
+    totalPrice: "Полная стоимость",
+    rent: "Аренда",
+    deleted: "удалено",
+    removed: "убрано",
+    reAdd: "Вернуть",
+    foodsEmpty: "После выбора сета блюда появятся здесь",
+    saladExists: "Этот салат уже выбран",
+    drinkExists: "Этот напиток уже выбран",
+    foodExists: "Это блюдо уже выбрано",
+    greeting: "Здравствуйте! Хочу оформить заказ.",
+    orderSheet: "Лист заказа",
+    clientName: "Имя клиента",
+    phoneLast: "Последние 4 цифры телефона",
+    set: "Сет",
+    peopleCount: "Количество человек",
+    arrivalDate: "Дата прихода",
+    arrivalTime: "Время прихода",
+    venue: "Место",
+    setFoods: "Блюда внутри сета",
+    addFood: "Добавить блюдо в сет",
+    removedFoods: "Убранные блюда из сета",
+    salads: "Салаты",
+    saladMenu: "Меню салатов",
+    removedSalads: "Удаленные салаты",
+    drinks: "Напитки",
+    drinkMenu: "Меню напитков",
+    removedDrinks: "Удаленные напитки",
+    agreement: "Полностью согласен/согласна с указанным выше заказом.",
+    terrace: "9 этаж терраса",
+    urbo: "1 этаж кофейня Урбо",
+    terraceRent: "Аренда. Терраса",
+    urboRent: "Аренда. Урбо",
+  },
+  en: {
+    choose: "Choose",
+    missingWritten: "not filled yet",
+    missingSelected: "not selected yet",
+    noSet: "Choose a set",
+    noChange: "no changes",
+    empty: "None yet",
+    person: "people",
+    portion: "portion",
+    piece: "pcs",
+    plate: "plate",
+    setPack: "set",
+    liter: "liters",
+    kg: "kg",
+    sht: "pcs",
+    perPersonOne: "1 per person",
+    perPersonFour: "4 pcs per person",
+    samsaRule: "6 pcs on 1 plate",
+    totalPrice: "Total price",
+    rent: "Rent",
+    deleted: "deleted",
+    removed: "removed",
+    reAdd: "Add back",
+    foodsEmpty: "Dishes will appear here after choosing a set",
+    saladExists: "This salad is already selected",
+    drinkExists: "This drink is already selected",
+    foodExists: "This dish is already selected",
+    greeting: "Hello! I would like to place an order.",
+    orderSheet: "Order sheet",
+    clientName: "Client name",
+    phoneLast: "Last 4 digits of phone",
+    set: "Set",
+    peopleCount: "Number of people",
+    arrivalDate: "Arrival date",
+    arrivalTime: "Arrival time",
+    venue: "Place",
+    setFoods: "Dishes inside the set",
+    addFood: "Add dish to set",
+    removedFoods: "Removed dishes from set",
+    salads: "Salads",
+    saladMenu: "Salad menu",
+    removedSalads: "Removed salads",
+    drinks: "Drinks",
+    drinkMenu: "Drink menu",
+    removedDrinks: "Removed drinks",
+    agreement: "I fully agree with the order above.",
+    terrace: "9th floor terrace",
+    urbo: "1st floor Urbo coffee shop",
+    terraceRent: "Rent. Terrace",
+    urboRent: "Rent. Urbo",
+  },
+  tr: {
+    choose: "Seçiniz",
+    missingWritten: "henüz yazılmadı",
+    missingSelected: "henüz seçilmedi",
+    noSet: "Set seçiniz",
+    noChange: "değişiklik yok",
+    empty: "Henüz yok",
+    person: "kişi",
+    portion: "porsiyon",
+    piece: "adet",
+    plate: "tabak",
+    setPack: "set",
+    liter: "litre",
+    kg: "kg",
+    sht: "adet",
+    perPersonOne: "kişi başı 1",
+    perPersonFour: "kişi başı 4 adet",
+    samsaRule: "1 tabakta 6 adet",
+    totalPrice: "Toplam tutar",
+    rent: "Kira",
+    deleted: "silindi",
+    removed: "çıkarıldı",
+    reAdd: "Geri ekle",
+    foodsEmpty: "Set seçildiğinde yemekler burada görünecek",
+    saladExists: "Bu salata zaten seçildi",
+    drinkExists: "Bu içecek zaten seçildi",
+    foodExists: "Bu yemek zaten seçildi",
+    greeting: "Merhaba! Sipariş vermek istiyorum.",
+    orderSheet: "Sipariş formu",
+    clientName: "Müşteri adı",
+    phoneLast: "Telefonun son 4 rakamı",
+    set: "Set",
+    peopleCount: "Kişi sayısı",
+    arrivalDate: "Geliş tarihi",
+    arrivalTime: "Geliş saati",
+    venue: "Yer",
+    setFoods: "Set içindeki yemekler",
+    addFood: "Sete yemek ekle",
+    removedFoods: "Setten çıkarılan yemekler",
+    salads: "Salatalar",
+    saladMenu: "Salata menüsü",
+    removedSalads: "Silinen salatalar",
+    drinks: "İçecekler",
+    drinkMenu: "İçecek menüsü",
+    removedDrinks: "Silinen içecekler",
+    agreement: "Yukarıdaki siparişi tamamen kabul ediyorum.",
+    terrace: "9. kat teras",
+    urbo: "1. kat Urbo kahve",
+    terraceRent: "Kira. Teras",
+    urboRent: "Kira. Urbo",
+  },
+  zh: {
+    choose: "请选择",
+    missingWritten: "尚未填写",
+    missingSelected: "尚未选择",
+    noSet: "请选择套餐",
+    noChange: "无更改",
+    empty: "暂无",
+    person: "人",
+    portion: "份",
+    piece: "个",
+    plate: "盘",
+    setPack: "组",
+    liter: "升",
+    kg: "公斤",
+    sht: "个",
+    perPersonOne: "每人 1 份",
+    perPersonFour: "每人 4 个",
+    samsaRule: "1 盘 6 个",
+    totalPrice: "总价",
+    rent: "租金",
+    deleted: "已删除",
+    removed: "已移除",
+    reAdd: "重新添加",
+    foodsEmpty: "选择套餐后菜品会显示在这里",
+    saladExists: "该沙拉已选择",
+    drinkExists: "该饮料已选择",
+    foodExists: "该菜品已选择",
+    greeting: "您好！我想下订单。",
+    orderSheet: "订单表",
+    clientName: "客户姓名",
+    phoneLast: "电话后 4 位",
+    set: "套餐",
+    peopleCount: "人数",
+    arrivalDate: "到店日期",
+    arrivalTime: "到店时间",
+    venue: "位置",
+    setFoods: "套餐内菜品",
+    addFood: "添加菜品到套餐",
+    removedFoods: "从套餐移除的菜品",
+    salads: "沙拉",
+    saladMenu: "沙拉菜单",
+    removedSalads: "已删除沙拉",
+    drinks: "饮料",
+    drinkMenu: "饮料菜单",
+    removedDrinks: "已删除饮料",
+    agreement: "我完全同意以上订单。",
+    terrace: "9楼露台",
+    urbo: "1楼 Urbo 咖啡馆",
+    terraceRent: "租金. 露台",
+    urboRent: "租金. Urbo",
+  },
+  ky: {
+    choose: "Тандаңыз",
+    missingWritten: "али жазылган жок",
+    missingSelected: "али тандалган жок",
+    noSet: "Сет тандаңыз",
+    noChange: "өзгөрүү жок",
+    empty: "Азырынча жок",
+    person: "адам",
+    portion: "порция",
+    piece: "даана",
+    plate: "тарелка",
+    setPack: "топтом",
+    liter: "литр",
+    kg: "кг",
+    sht: "даана",
+    perPersonOne: "адам башына 1",
+    perPersonFour: "адам башына 4 даана",
+    samsaRule: "1 тарелкада 6 даана",
+    totalPrice: "Толук баасы",
+    rent: "Аренда",
+    deleted: "өчүрүлдү",
+    removed: "алынды",
+    reAdd: "Кайра кошуу",
+    foodsEmpty: "Сет тандалганда тамактар ушул жерде чыгат",
+    saladExists: "Бул салат тандалып коюлган",
+    drinkExists: "Бул суусундук тандалып коюлган",
+    foodExists: "Бул тамак тандалып коюлган",
+    greeting: "Саламатсызбы! Буйрутма бергим келет.",
+    orderSheet: "Буйрутма барагы",
+    clientName: "Кардардын аты",
+    phoneLast: "Телефондун акыркы 4 саны",
+    set: "Сет",
+    peopleCount: "Адам саны",
+    arrivalDate: "Келе турган күнү",
+    arrivalTime: "Келе турган сааты",
+    venue: "Отура турган жер",
+    setFoods: "Сет ичиндеги тамактар",
+    addFood: "Сетке тамак кошуу",
+    removedFoods: "Сеттен алынган тамактар",
+    salads: "Салаттар",
+    saladMenu: "Салат менюсу",
+    removedSalads: "Өчүрүлгөн салаттар",
+    drinks: "Суусундуктар",
+    drinkMenu: "Суусундук менюсу",
+    removedDrinks: "Өчүрүлгөн суусундуктар",
+    agreement: "Жогорудагы буйрутмаларга толук макулмун.",
+    terrace: "9-кабат терраса",
+    urbo: "1-кабат Урбо кофейня",
+    terraceRent: "Аренда. Терраса",
+    urboRent: "Аренда. Урбо",
+  },
+  uz: {
+    choose: "Tanlang",
+    missingWritten: "hali yozilmadi",
+    missingSelected: "hali tanlanmadi",
+    noSet: "Set tanlang",
+    noChange: "o'zgarish yo'q",
+    empty: "Hozircha yo'q",
+    person: "kishi",
+    portion: "porsiya",
+    piece: "dona",
+    plate: "tarelkа",
+    setPack: "to'plam",
+    liter: "litr",
+    kg: "kg",
+    sht: "dona",
+    perPersonOne: "har kishiga 1",
+    perPersonFour: "har kishiga 4 dona",
+    samsaRule: "1 tarelkada 6 dona",
+    totalPrice: "To'liq narxi",
+    rent: "Ijara",
+    deleted: "o'chirildi",
+    removed: "olindi",
+    reAdd: "Qayta qo'shish",
+    foodsEmpty: "Set tanlanganda taomlar shu yerda chiqadi",
+    saladExists: "Bu salat tanlangan",
+    drinkExists: "Bu ichimlik tanlangan",
+    foodExists: "Bu taom tanlangan",
+    greeting: "Assalomu alaykum! Buyurtma bermoqchiman.",
+    orderSheet: "Buyurtma varaqasi",
+    clientName: "Mijoz ismi",
+    phoneLast: "Telefonning oxirgi 4 raqami",
+    set: "Set",
+    peopleCount: "Kishi soni",
+    arrivalDate: "Keladigan kuni",
+    arrivalTime: "Keladigan vaqti",
+    venue: "O'tiradigan joy",
+    setFoods: "Set ichidagi taomlar",
+    addFood: "Setga taom qo'shish",
+    removedFoods: "Setdan olingan taomlar",
+    salads: "Salatlar",
+    saladMenu: "Salat menyusi",
+    removedSalads: "O'chirilgan salatlar",
+    drinks: "Ichimliklar",
+    drinkMenu: "Ichimlik menyusi",
+    removedDrinks: "O'chirilgan ichimliklar",
+    agreement: "Yuqoridagi buyurtmalarga to'liq roziman.",
+    terrace: "9-qavat terrasa",
+    urbo: "1-qavat Urbo qahvaxonasi",
+    terraceRent: "Ijara. Terrasa",
+    urboRent: "Ijara. Urbo",
+  },
+};
+
+const staticTranslations = {
+  "Сеттер": "Сеты",
+  "Тағамдар": "Блюда",
+  "Тапсырыс": "Заказ",
+  "Дайын сеттер": "Готовые сеты",
+  "Қазақы дәм сеттері": "Сеты с казахским вкусом",
+  "Қазан кәуап, палау және манты сеттері. Тапсырыс кемінде 1 күн алдын қабылданады.": "Сеты с казан-кебабом, пловом и мантами. Заказ принимается минимум за 1 день.",
+  "Сеттерді көру": "Смотреть сеты",
+  "Қоңырау шалу": "Позвонить",
+  "1 күн алдын": "За 1 день",
+  "тапсырыс беру уақыты": "время оформления заказа",
+  "3 сет": "3 сета",
+  "дайын ұсыныс": "готовые предложения",
+  "3 дәм": "3 вкуса",
+  "Қазан Кәуап, Палау, Манты": "Казан-кебаб, плов, манты",
+  "Үш негізгі сет": "Три основных сета",
+  "Барлық тапсырыс кемінде 1 күн бұрын беріледі. Бағалар теңгемен көрсетілген, адам саны тапсырыс кезінде нақтыланады.": "Все заказы принимаются минимум за 1 день. Цены указаны в тенге, количество человек уточняется при заказе.",
+  "Ет тағамы": "Мясное блюдо",
+  "Қазан-кебап": "Казан-кебаб",
+  "Қазан-кебап негізгі тағам ретінде беріледі, қосымша ас мәзірі төменде көрсетілген.": "Казан-кебаб подается как основное блюдо, дополнительное меню указано ниже.",
+  "Тапсырыс беру": "Заказать",
+  "Классика": "Классика",
+  "Плов порциямен ұсынылады, қосымша тағамдар мен салаттар бөлек таңдауға ыңғайлы.": "Плов подается порционно, дополнительные блюда и салаты удобно выбрать отдельно.",
+  "Бу тағамы": "Блюдо на пару",
+  "Манты дана бойынша есептеледі, тапсырыс көлемі адам санына қарай нақтыланады.": "Манты считаются поштучно, объем заказа уточняется по количеству человек.",
+  "Топпен келгенде": "Для группы",
+  "Топтық сет есебі": "Расчет группового сета",
+  "Адам санын енгізіңіз, сет құрамы автоматты есептеледі.": "Введите количество человек, состав сета рассчитается автоматически.",
+  "Сет түрі": "Тип сета",
+  "Адам саны": "Количество человек",
+  "Қайнатпа сорпа": "Суп кайнатпа",
+  "адам басына 1": "по 1 на человека",
+  "Самса": "Самса",
+  "1 тарелкада 6 дана": "в 1 тарелке 6 шт",
+  "Сусын": "Напитки",
+  "әр 4 адамға 1 топтама, 3 литр: Coca-Cola, Fanta, Sprite": "на каждые 4 человека 1 набор, 3 литра: Coca-Cola, Fanta, Sprite",
+  "Бауырсақ": "Баурсаки",
+  "әр 12 адамға 1 кг": "1 кг на каждые 12 человек",
+  "Салат": "Салат",
+  "әр 2 адамға 1 тарелка": "1 тарелка на каждые 2 человека",
+  "Сет ішіндегі тағамдар": "Блюда внутри сета",
+  "Сетке тағам қосу": "Добавить блюдо в сет",
+  "Таңдау": "Выбрать",
+  "Сеттен алынған тағамдар": "Убранные блюда из сета",
+  "Салат түрлері": "Виды салатов",
+  "Салат менюі": "Меню салатов",
+  "Өшірілген салаттар": "Удаленные салаты",
+  "Сусын түрлері": "Виды напитков",
+  "Сусын менюі": "Меню напитков",
+  "Өшірілген сусындар": "Удаленные напитки",
+  "Тағам атаулары": "Названия блюд",
+  "Мәзірдегі сеттер": "Сеты в меню",
+  "Қазан-кебап сеті": "Сет Казан-кебаб",
+  "Плов сеті": "Сет Плов",
+  "Манты сеті": "Сет Манты",
+  "Аренда. Терраса": "Аренда. Терраса",
+  "Аренда. Урбо": "Аренда. Урбо",
+  "Қайнатпа сорпа (п)": "Суп кайнатпа (п)",
+  "Плов (п)": "Плов (п)",
+  "Манты (шт)": "Манты (шт)",
+  "Самса (шт)": "Самса (шт)",
+  "Нан": "Лепешка",
+  "Бауырсақ 1 кг": "Баурсаки 1 кг",
+  "Салат. Хрустящие баклажаны": "Салат. Хрустящие баклажаны",
+  "Салат. Греческий": "Салат. Греческий",
+  "Салат. Цезарь": "Салат. Цезарь",
+  "Сусын (1 л)": "Напиток (1 л)",
+  "Шай": "Чай",
+  "Таңдалған сет": "Выбранный сет",
+  "Тапсырыс кемінде 1 күн алдын қабылданады. Адам саны, жеткізу уақыты және жалпы сома WhatsApp арқылы нақтыланады.": "Заказ принимается минимум за 1 день. Количество человек, время и общая сумма уточняются через WhatsApp.",
+  "WhatsApp арқылы": "Через WhatsApp",
+  "Орын таңдау": "Выбор места",
+  "Меню таңдаңыз": "Выберите меню",
+  "Таңдауыңыз": "Ваш выбор",
+  "Әлі таңдалмады": "Еще не выбрано",
+  "Сет таңдаңыз": "Выберите сет",
+  "Клиент есімі": "Имя клиента",
+  "Атыңыз": "Ваше имя",
+  "кк.аа.жжжж": "дд.мм.гггг",
+  "сағ:мин": "чч:мм",
+  "Телефон номерінің соңғы 4 саны": "Последние 4 цифры телефона",
+  "Қай күні келеді": "Дата прихода",
+  "Сағат нешеге келеді": "Время прихода",
+  "Отыратын орын": "Место",
+  "9 қабат терраса - аренда 20 000 ₸": "9 этаж терраса - аренда 20 000 ₸",
+  "1 қабат Урбо кофейня - аренда 0 ₸": "1 этаж кофейня Урбо - аренда 0 ₸",
+  "WhatsApp арқылы жазу": "Написать в WhatsApp",
+  "Тапсырыс парағы": "Лист заказа",
+  "әлі жазылмады": "еще не заполнено",
+  "әлі таңдалмады": "еще не выбрано",
+  "Телефон соңғы 4 саны": "Последние 4 цифры телефона",
+  "Сет": "Сет",
+  "Келетін күні": "Дата прихода",
+  "Келетін сағаты": "Время прихода",
+  "Аренда": "Аренда",
+  "Салаттар": "Салаты",
+  "Сусындар": "Напитки",
+  "Толық бағасы": "Полная стоимость",
+  "Жоғарыдағы тапсырыстарға толықтай келісемін.": "Полностью согласен/согласна с указанным выше заказом.",
+  "Тапсырыс: кемінде 1 күн алдын қабылданады": "Заказ: принимается минимум за 1 день",
+  "Басты бет": "Главная",
+  "Бөлімдер": "Разделы",
+  "Тіл таңдау": "Выбор языка",
+  "Mugalim терраса дәмханасының тағамдары": "Блюда кафе Mugalim терраса",
+  "Жылдам ақпарат": "Краткая информация",
+  "Самса тарелка санын өзгерту": "Изменить количество тарелок самсы",
+  "Салат тарелка санын өзгерту": "Изменить количество тарелок салата",
+  "Тапсырыс шарттары": "Условия заказа",
+  "PDF тапсырыс нұсқасы": "PDF-версия заказа",
+};
+
+const staticTranslationsAll = {
+  ru: staticTranslations,
+  en: {
+    "Басты бет": "Home",
+    "Бөлімдер": "Sections",
+    "Тіл таңдау": "Language selection",
+    "Mugalim терраса дәмханасының тағамдары": "Dishes of Mugalim terrace cafe",
+    "Жылдам ақпарат": "Quick information",
+    "Самса тарелка санын өзгерту": "Change samsa plate count",
+    "Салат тарелка санын өзгерту": "Change salad plate count",
+    "Тапсырыс шарттары": "Order terms",
+    "PDF тапсырыс нұсқасы": "PDF order version",
+    "Сеттер": "Sets",
+    "Тағамдар": "Dishes",
+    "Тапсырыс": "Order",
+    "Дайын сеттер": "Ready sets",
+    "Қазақы дәм сеттері": "Kazakh taste sets",
+    "Қазан кәуап, палау және манты сеттері. Тапсырыс кемінде 1 күн алдын қабылданады.": "Kazan-kebab, plov and manty sets. Orders are accepted at least 1 day in advance.",
+    "Сеттерді көру": "View sets",
+    "Қоңырау шалу": "Call",
+    "1 күн алдын": "1 day ahead",
+    "тапсырыс беру уақыты": "order time",
+    "3 сет": "3 sets",
+    "дайын ұсыныс": "ready offers",
+    "3 дәм": "3 tastes",
+    "Қазан Кәуап, Палау, Манты": "Kazan-kebab, plov, manty",
+    "Үш негізгі сет": "Three main sets",
+    "Барлық тапсырыс кемінде 1 күн бұрын беріледі. Бағалар теңгемен көрсетілген, адам саны тапсырыс кезінде нақтыланады.": "All orders are placed at least 1 day in advance. Prices are in tenge, number of people is confirmed when ordering.",
+    "Ет тағамы": "Meat dish",
+    "Қазан-кебап": "Kazan-kebab",
+    "Қазан-кебап негізгі тағам ретінде беріледі, қосымша ас мәзірі төменде көрсетілген.": "Kazan-kebab is served as the main dish; the additional menu is shown below.",
+    "Тапсырыс беру": "Order",
+    "Классика": "Classic",
+    "Плов порциямен ұсынылады, қосымша тағамдар мен салаттар бөлек таңдауға ыңғайлы.": "Plov is served by portion; additional dishes and salads can be selected separately.",
+    "Бу тағамы": "Steamed dish",
+    "Манты дана бойынша есептеледі, тапсырыс көлемі адам санына қарай нақтыланады.": "Manty is counted by piece; the order size is based on the number of people.",
+    "Топпен келгенде": "For groups",
+    "Топтық сет есебі": "Group set calculator",
+    "Адам санын енгізіңіз, сет құрамы автоматты есептеледі.": "Enter the number of people and the set composition will be calculated automatically.",
+    "Сет түрі": "Set type",
+    "Адам саны": "Number of people",
+    "Қайнатпа сорпа": "Kainatma soup",
+    "адам басына 1": "1 per person",
+    "Самса": "Samsa",
+    "1 тарелкада 6 дана": "6 pcs on 1 plate",
+    "Сусын": "Drinks",
+    "әр 4 адамға 1 топтама, 3 литр: Coca-Cola, Fanta, Sprite": "1 set for every 4 people, 3 liters: Coca-Cola, Fanta, Sprite",
+    "Бауырсақ": "Baursak",
+    "әр 12 адамға 1 кг": "1 kg for every 12 people",
+    "Салат": "Salad",
+    "әр 2 адамға 1 тарелка": "1 plate for every 2 people",
+    "Сет ішіндегі тағамдар": "Dishes inside the set",
+    "Сетке тағам қосу": "Add dish to set",
+    "Таңдау": "Choose",
+    "Сеттен алынған тағамдар": "Removed dishes from set",
+    "Салат түрлері": "Salad types",
+    "Салат менюі": "Salad menu",
+    "Өшірілген салаттар": "Removed salads",
+    "Сусын түрлері": "Drink types",
+    "Сусын менюі": "Drink menu",
+    "Өшірілген сусындар": "Removed drinks",
+    "Тағам атаулары": "Dish names",
+    "Мәзірдегі сеттер": "Sets in the menu",
+    "Қазан-кебап сеті": "Kazan-kebab set",
+    "Плов сеті": "Plov set",
+    "Манты сеті": "Manty set",
+    "Аренда. Терраса": "Rent. Terrace",
+    "Аренда. Урбо": "Rent. Urbo",
+    "Салат. Хрустящие баклажаны": "Salad. Crispy eggplant",
+    "Салат. Греческий": "Salad. Greek",
+    "Салат. Цезарь": "Salad. Caesar",
+    "Қайнатпа сорпа (п)": "Kainatma soup (p)",
+    "Плов (п)": "Plov (p)",
+    "Манты (шт)": "Manty (pcs)",
+    "Самса (шт)": "Samsa (pcs)",
+    "Нан": "Bread",
+    "Бауырсақ 1 кг": "Baursak 1 kg",
+    "Сусын (1 л)": "Drink (1 l)",
+    "Шай": "Tea",
+    "Таңдалған сет": "Selected set",
+    "Тапсырыс кемінде 1 күн алдын қабылданады. Адам саны, жеткізу уақыты және жалпы сома WhatsApp арқылы нақтыланады.": "Orders are accepted at least 1 day in advance. People count, time and total are confirmed via WhatsApp.",
+    "WhatsApp арқылы": "Via WhatsApp",
+    "Орын таңдау": "Choose place",
+    "Меню таңдаңыз": "Choose menu",
+    "Таңдауыңыз": "Your choice",
+    "Әлі таңдалмады": "Not selected yet",
+    "Сет таңдаңыз": "Choose a set",
+    "Клиент есімі": "Client name",
+    "Атыңыз": "Your name",
+    "кк.аа.жжжж": "dd.mm.yyyy",
+    "сағ:мин": "hh:mm",
+    "Телефон номерінің соңғы 4 саны": "Last 4 digits of phone",
+    "Қай күні келеді": "Arrival date",
+    "Сағат нешеге келеді": "Arrival time",
+    "Отыратын орын": "Place",
+    "9 қабат терраса - аренда 20 000 ₸": "9th floor terrace - rent 20 000 ₸",
+    "1 қабат Урбо кофейня - аренда 0 ₸": "1st floor Urbo coffee shop - rent 0 ₸",
+    "WhatsApp арқылы жазу": "Write via WhatsApp",
+    "Тапсырыс парағы": "Order sheet",
+    "әлі жазылмады": "not filled yet",
+    "әлі таңдалмады": "not selected yet",
+    "Телефон соңғы 4 саны": "Last 4 digits of phone",
+    "Сет": "Set",
+    "Келетін күні": "Arrival date",
+    "Келетін сағаты": "Arrival time",
+    "Аренда": "Rent",
+    "Салаттар": "Salads",
+    "Сусындар": "Drinks",
+    "Толық бағасы": "Total price",
+    "Жоғарыдағы тапсырыстарға толықтай келісемін.": "I fully agree with the order above.",
+    "Тапсырыс: кемінде 1 күн алдын қабылданады": "Order: accepted at least 1 day in advance",
+  },
+  tr: {
+    "Басты бет": "Ana sayfa",
+    "Бөлімдер": "Bölümler",
+    "Тіл таңдау": "Dil seçimi",
+    "Mugalim терраса дәмханасының тағамдары": "Mugalim teras kafesinin yemekleri",
+    "Жылдам ақпарат": "Kısa bilgi",
+    "Самса тарелка санын өзгерту": "Samsa tabak sayısını değiştir",
+    "Салат тарелка санын өзгерту": "Salata tabak sayısını değiştir",
+    "Тапсырыс шарттары": "Sipariş şartları",
+    "PDF тапсырыс нұсқасы": "PDF sipariş sürümü",
+    "Сеттер": "Setler",
+    "Тағамдар": "Yemekler",
+    "Тапсырыс": "Sipariş",
+    "Дайын сеттер": "Hazır setler",
+    "Қазақы дәм сеттері": "Kazak lezzet setleri",
+    "Қазан кәуап, палау және манты сеттері. Тапсырыс кемінде 1 күн алдын қабылданады.": "Kazan-kebap, pilav ve mantı setleri. Sipariş en az 1 gün önceden alınır.",
+    "Сеттерді көру": "Setleri gör",
+    "Қоңырау шалу": "Ara",
+    "1 күн алдын": "1 gün önce",
+    "тапсырыс беру уақыты": "sipariş zamanı",
+    "3 сет": "3 set",
+    "дайын ұсыныс": "hazır teklif",
+    "3 дәм": "3 lezzet",
+    "Қазан Кәуап, Палау, Манты": "Kazan-kebap, pilav, mantı",
+    "Үш негізгі сет": "Üç ana set",
+    "Барлық тапсырыс кемінде 1 күн бұрын беріледі. Бағалар теңгемен көрсетілген, адам саны тапсырыс кезінде нақтыланады.": "Tüm siparişler en az 1 gün önceden verilir. Fiyatlar tenge olarak belirtilmiştir, kişi sayısı siparişte netleşir.",
+    "Ет тағамы": "Et yemeği",
+    "Қазан-кебап": "Kazan-kebap",
+    "Қазан-кебап негізгі тағам ретінде беріледі, қосымша ас мәзірі төменде көрсетілген.": "Kazan-kebap ana yemek olarak sunulur, ek menü aşağıda gösterilmiştir.",
+    "Тапсырыс беру": "Sipariş ver",
+    "Классика": "Klasik",
+    "Плов порциямен ұсынылады, қосымша тағамдар мен салаттар бөлек таңдауға ыңғайлы.": "Pilav porsiyonla sunulur, ek yemekler ve salatalar ayrı seçilebilir.",
+    "Бу тағамы": "Buharda yemek",
+    "Манты дана бойынша есептеледі, тапсырыс көлемі адам санына қарай нақтыланады.": "Mantı adet olarak hesaplanır, sipariş miktarı kişi sayısına göre netleşir.",
+    "Топпен келгенде": "Grup için",
+    "Топтық сет есебі": "Grup set hesabı",
+    "Адам санын енгізіңіз, сет құрамы автоматты есептеледі.": "Kişi sayısını girin, set içeriği otomatik hesaplanır.",
+    "Сет түрі": "Set türü",
+    "Адам саны": "Kişi sayısı",
+    "Қайнатпа сорпа": "Kaynatma çorba",
+    "Таңдау": "Seç",
+    "Тағам атаулары": "Yemek adları",
+    "Мәзірдегі сеттер": "Menüdeki setler",
+    "Таңдалған сет": "Seçilen set",
+    "Меню таңдаңыз": "Menü seçiniz",
+    "Таңдауыңыз": "Seçiminiz",
+    "Әлі таңдалмады": "Henüz seçilmedi",
+    "Сет таңдаңыз": "Set seçiniz",
+    "Клиент есімі": "Müşteri adı",
+    "Атыңыз": "Adınız",
+    "Телефон номерінің соңғы 4 саны": "Telefonun son 4 rakamı",
+    "Қай күні келеді": "Geliş tarihi",
+    "Сағат нешеге келеді": "Geliş saati",
+    "Отыратын орын": "Yer",
+    "WhatsApp арқылы жазу": "WhatsApp ile yaz",
+    "Тапсырыс: кемінде 1 күн алдын қабылданады": "Sipariş: en az 1 gün önceden alınır",
+  },
+  zh: {
+    "Басты бет": "首页",
+    "Бөлімдер": "栏目",
+    "Тіл таңдау": "语言选择",
+    "Mugalim терраса дәмханасының тағамдары": "Mugalim 露台咖啡馆菜品",
+    "Жылдам ақпарат": "快速信息",
+    "Самса тарелка санын өзгерту": "更改萨姆萨盘数",
+    "Салат тарелка санын өзгерту": "更改沙拉盘数",
+    "Тапсырыс шарттары": "订单条款",
+    "PDF тапсырыс нұсқасы": "PDF 订单版本",
+    "Сеттер": "套餐",
+    "Тағамдар": "菜品",
+    "Тапсырыс": "订单",
+    "Дайын сеттер": "现成套餐",
+    "Қазақы дәм сеттері": "哈萨克风味套餐",
+    "Қазан кәуап, палау және манты сеттері. Тапсырыс кемінде 1 күн алдын қабылданады.": "锅烤肉、抓饭和曼提套餐。订单至少提前 1 天接受。",
+    "Сеттерді көру": "查看套餐",
+    "Қоңырау шалу": "拨打电话",
+    "1 күн алдын": "提前 1 天",
+    "тапсырыс беру уақыты": "下单时间",
+    "3 сет": "3 个套餐",
+    "дайын ұсыныс": "现成方案",
+    "3 дәм": "3 种口味",
+    "Қазан Кәуап, Палау, Манты": "锅烤肉、抓饭、曼提",
+    "Үш негізгі сет": "三个主套餐",
+    "Ет тағамы": "肉类菜品",
+    "Қазан-кебап": "锅烤肉",
+    "Тапсырыс беру": "下单",
+    "Классика": "经典",
+    "Бу тағамы": "蒸菜",
+    "Топпен келгенде": "团体用餐",
+    "Топтық сет есебі": "团体套餐计算",
+    "Адам санын енгізіңіз, сет құрамы автоматты есептеледі.": "输入人数，套餐内容会自动计算。",
+    "Сет түрі": "套餐类型",
+    "Адам саны": "人数",
+    "Қайнатпа сорпа": "清汤",
+    "Таңдау": "选择",
+    "Тағам атаулары": "菜品名称",
+    "Мәзірдегі сеттер": "菜单套餐",
+    "Таңдалған сет": "已选套餐",
+    "Меню таңдаңыз": "选择菜单",
+    "Таңдауыңыз": "您的选择",
+    "Әлі таңдалмады": "尚未选择",
+    "Сет таңдаңыз": "请选择套餐",
+    "Клиент есімі": "客户姓名",
+    "Атыңыз": "您的姓名",
+    "Телефон номерінің соңғы 4 саны": "电话后 4 位",
+    "Қай күні келеді": "到店日期",
+    "Сағат нешеге келеді": "到店时间",
+    "Отыратын орын": "位置",
+    "WhatsApp арқылы жазу": "通过 WhatsApp 联系",
+    "Тапсырыс: кемінде 1 күн алдын қабылданады": "订单：至少提前 1 天接受",
+  },
+  ky: {
+    "Басты бет": "Башкы бет",
+    "Бөлімдер": "Бөлүмдөр",
+    "Тіл таңдау": "Тил тандоо",
+    "Mugalim терраса дәмханасының тағамдары": "Mugalim терраса кафесинин тамактары",
+    "Жылдам ақпарат": "Ыкчам маалымат",
+    "Самса тарелка санын өзгерту": "Самса тарелка санын өзгөртүү",
+    "Салат тарелка санын өзгерту": "Салат тарелка санын өзгөртүү",
+    "Тапсырыс шарттары": "Буйрутма шарттары",
+    "PDF тапсырыс нұсқасы": "PDF буйрутма нускасы",
+    "Сеттер": "Сеттер",
+    "Тағамдар": "Тамактар",
+    "Тапсырыс": "Буйрутма",
+    "Дайын сеттер": "Даяр сеттер",
+    "Қазақы дәм сеттері": "Казак даам сеттери",
+    "Қазан кәуап, палау және манты сеттері. Тапсырыс кемінде 1 күн алдын қабылданады.": "Казан-кебап, палоо жана манты сеттери. Буйрутма кеминде 1 күн алдын кабыл алынат.",
+    "Сеттерді көру": "Сеттерди көрүү",
+    "Қоңырау шалу": "Чалуу",
+    "1 күн алдын": "1 күн алдын",
+    "тапсырыс беру уақыты": "буйрутма убактысы",
+    "3 сет": "3 сет",
+    "дайын ұсыныс": "даяр сунуш",
+    "3 дәм": "3 даам",
+    "Қазан Кәуап, Палау, Манты": "Казан-кебап, палоо, манты",
+    "Үш негізгі сет": "Үч негизги сет",
+    "Ет тағамы": "Эт тамагы",
+    "Қазан-кебап": "Казан-кебап",
+    "Тапсырыс беру": "Буйрутма берүү",
+    "Классика": "Классика",
+    "Бу тағамы": "Бууга бышкан тамак",
+    "Топпен келгенде": "Топ менен келгенде",
+    "Топтық сет есебі": "Топтук сет эсеби",
+    "Адам санын енгізіңіз, сет құрамы автоматты есептеледі.": "Адам санын киргизиңиз, сет курамы автоматтык эсептелет.",
+    "Сет түрі": "Сет түрү",
+    "Адам саны": "Адам саны",
+    "Қайнатпа сорпа": "Кайнатма шорпо",
+    "Таңдау": "Тандоо",
+    "Тағам атаулары": "Тамак аттары",
+    "Мәзірдегі сеттер": "Менюдагы сеттер",
+    "Таңдалған сет": "Тандалган сет",
+    "Меню таңдаңыз": "Меню тандаңыз",
+    "Таңдауыңыз": "Тандооңуз",
+    "Әлі таңдалмады": "Али тандалган жок",
+    "Сет таңдаңыз": "Сет тандаңыз",
+    "Клиент есімі": "Кардардын аты",
+    "Атыңыз": "Атыңыз",
+    "Телефон номерінің соңғы 4 саны": "Телефондун акыркы 4 саны",
+    "Қай күні келеді": "Келе турган күнү",
+    "Сағат нешеге келеді": "Келе турган сааты",
+    "Отыратын орын": "Отура турган жер",
+    "WhatsApp арқылы жазу": "WhatsApp аркылуу жазуу",
+    "Тапсырыс: кемінде 1 күн алдын қабылданады": "Буйрутма: кеминде 1 күн алдын кабыл алынат",
+  },
+  uz: {
+    "Басты бет": "Bosh sahifa",
+    "Бөлімдер": "Bo'limlar",
+    "Тіл таңдау": "Til tanlash",
+    "Mugalim терраса дәмханасының тағамдары": "Mugalim terrasa qahvaxonasi taomlari",
+    "Жылдам ақпарат": "Tezkor ma'lumot",
+    "Самса тарелка санын өзгерту": "Somsa tarelka sonini o'zgartirish",
+    "Салат тарелка санын өзгерту": "Salat tarelka sonini o'zgartirish",
+    "Тапсырыс шарттары": "Buyurtma shartlari",
+    "PDF тапсырыс нұсқасы": "PDF buyurtma nusxasi",
+    "Сеттер": "Setlar",
+    "Тағамдар": "Taomlar",
+    "Тапсырыс": "Buyurtma",
+    "Дайын сеттер": "Tayyor setlar",
+    "Қазақы дәм сеттері": "Qozoqcha ta'm setlari",
+    "Қазан кәуап, палау және манты сеттері. Тапсырыс кемінде 1 күн алдын қабылданады.": "Qozon-kabob, palov va manti setlari. Buyurtma kamida 1 kun oldin qabul qilinadi.",
+    "Сеттерді көру": "Setlarni ko'rish",
+    "Қоңырау шалу": "Qo'ng'iroq qilish",
+    "1 күн алдын": "1 kun oldin",
+    "тапсырыс беру уақыты": "buyurtma vaqti",
+    "3 сет": "3 set",
+    "дайын ұсыныс": "tayyor taklif",
+    "3 дәм": "3 ta'm",
+    "Қазан Кәуап, Палау, Манты": "Qozon-kabob, palov, manti",
+    "Үш негізгі сет": "Uch asosiy set",
+    "Ет тағамы": "Go'shtli taom",
+    "Қазан-кебап": "Qozon-kabob",
+    "Тапсырыс беру": "Buyurtma berish",
+    "Классика": "Klassika",
+    "Бу тағамы": "Bug'da pishgan taom",
+    "Топпен келгенде": "Guruh bilan kelganda",
+    "Топтық сет есебі": "Guruh set hisobi",
+    "Адам санын енгізіңіз, сет құрамы автоматты есептеледі.": "Kishi sonini kiriting, set tarkibi avtomatik hisoblanadi.",
+    "Сет түрі": "Set turi",
+    "Адам саны": "Kishi soni",
+    "Қайнатпа сорпа": "Qaynatma sho'rva",
+    "Таңдау": "Tanlash",
+    "Тағам атаулары": "Taom nomlari",
+    "Мәзірдегі сеттер": "Menyudagi setlar",
+    "Таңдалған сет": "Tanlangan set",
+    "Меню таңдаңыз": "Menyu tanlang",
+    "Таңдауыңыз": "Tanlovingiz",
+    "Әлі таңдалмады": "Hali tanlanmadi",
+    "Сет таңдаңыз": "Set tanlang",
+    "Клиент есімі": "Mijoz ismi",
+    "Атыңыз": "Ismingiz",
+    "Телефон номерінің соңғы 4 саны": "Telefonning oxirgi 4 raqami",
+    "Қай күні келеді": "Keladigan kuni",
+    "Сағат нешеге келеді": "Keladigan vaqti",
+    "Отыратын орын": "O'tiradigan joy",
+    "WhatsApp арқылы жазу": "WhatsApp orqali yozish",
+    "Тапсырыс: кемінде 1 күн алдын қабылданады": "Buyurtma: kamida 1 kun oldin qabul qilinadi",
+  },
+};
+
+Object.assign(staticTranslationsAll.tr, {
+  "Салат. Хрустящие баклажаны": "Salata. Çıtır patlıcan",
+  "Салат. Греческий": "Salata. Yunan",
+  "Салат. Цезарь": "Salata. Sezar",
+  "Аренда. Терраса": "Kira. Teras",
+  "Аренда. Урбо": "Kira. Urbo",
+  "адам басына 1": "kişi başı 1",
+  "Самса": "Samsa",
+  "1 тарелкада 6 дана": "1 tabakta 6 adet",
+  "Сусын": "İçecek",
+  "әр 4 адамға 1 топтама, 3 литр: Coca-Cola, Fanta, Sprite": "her 4 kişi için 1 set, 3 litre: Coca-Cola, Fanta, Sprite",
+  "Бауырсақ": "Baursak",
+  "әр 12 адамға 1 кг": "her 12 kişi için 1 kg",
+  "Салат": "Salata",
+  "әр 2 адамға 1 тарелка": "her 2 kişi için 1 tabak",
+  "Сет ішіндегі тағамдар": "Set içindeki yemekler",
+  "Сетке тағам қосу": "Sete yemek ekle",
+  "Сеттен алынған тағамдар": "Setten çıkarılan yemekler",
+  "Салат түрлері": "Salata çeşitleri",
+  "Салат менюі": "Salata menüsü",
+  "Өшірілген салаттар": "Silinen salatalar",
+  "Сусын түрлері": "İçecek çeşitleri",
+  "Сусын менюі": "İçecek menüsü",
+  "Өшірілген сусындар": "Silinen içecekler",
+  "Қазан-кебап сеті": "Kazan-kebap seti",
+  "Плов сеті": "Pilav seti",
+  "Манты сеті": "Mantı seti",
+  "Қайнатпа сорпа (п)": "Kaynatma çorba (p)",
+  "Плов (п)": "Pilav (p)",
+  "Манты (шт)": "Mantı (adet)",
+  "Самса (шт)": "Samsa (adet)",
+  "Нан": "Ekmek",
+  "Бауырсақ 1 кг": "Baursak 1 kg",
+  "Сусын (1 л)": "İçecek (1 l)",
+  "Шай": "Çay",
+  "Тапсырыс кемінде 1 күн алдын қабылданады. Адам саны, жеткізу уақыты және жалпы сома WhatsApp арқылы нақтыланады.": "Sipariş en az 1 gün önceden alınır. Kişi sayısı, zaman ve toplam tutar WhatsApp üzerinden netleşir.",
+  "WhatsApp арқылы": "WhatsApp ile",
+  "Орын таңдау": "Yer seçimi",
+  "кк.аа.жжжж": "gg.aa.yyyy",
+  "сағ:мин": "ss:dd",
+  "9 қабат терраса - аренда 20 000 ₸": "9. kat teras - kira 20 000 ₸",
+  "1 қабат Урбо кофейня - аренда 0 ₸": "1. kat Urbo kahve - kira 0 ₸",
+  "Тапсырыс парағы": "Sipariş formu",
+  "әлі жазылмады": "henüz yazılmadı",
+  "әлі таңдалмады": "henüz seçilmedi",
+  "Телефон соңғы 4 саны": "Telefonun son 4 rakamı",
+  "Сет": "Set",
+  "Келетін күні": "Geliş tarihi",
+  "Келетін сағаты": "Geliş saati",
+  "Аренда": "Kira",
+  "Салаттар": "Salatalar",
+  "Сусындар": "İçecekler",
+  "Толық бағасы": "Toplam tutar",
+  "Жоғарыдағы тапсырыстарға толықтай келісемін.": "Yukarıdaki siparişi tamamen kabul ediyorum.",
+});
+
+Object.assign(staticTranslationsAll.zh, {
+  "Салат. Хрустящие баклажаны": "沙拉. 脆茄子",
+  "Салат. Греческий": "沙拉. 希腊沙拉",
+  "Салат. Цезарь": "沙拉. 凯撒",
+  "Аренда. Терраса": "租金. 露台",
+  "Аренда. Урбо": "租金. Urbo",
+  "адам басына 1": "每人 1 份",
+  "Самса": "萨姆萨",
+  "1 тарелкада 6 дана": "1 盘 6 个",
+  "Сусын": "饮料",
+  "әр 4 адамға 1 топтама, 3 литр: Coca-Cola, Fanta, Sprite": "每 4 人 1 组，3 升：Coca-Cola、Fanta、Sprite",
+  "Бауырсақ": "包尔萨克",
+  "әр 12 адамға 1 кг": "每 12 人 1 公斤",
+  "Салат": "沙拉",
+  "әр 2 адамға 1 тарелка": "每 2 人 1 盘",
+  "Сет ішіндегі тағамдар": "套餐内菜品",
+  "Сетке тағам қосу": "添加菜品到套餐",
+  "Сеттен алынған тағамдар": "从套餐移除的菜品",
+  "Салат түрлері": "沙拉种类",
+  "Салат менюі": "沙拉菜单",
+  "Өшірілген салаттар": "已删除沙拉",
+  "Сусын түрлері": "饮料种类",
+  "Сусын менюі": "饮料菜单",
+  "Өшірілген сусындар": "已删除饮料",
+  "Қазан-кебап сеті": "锅烤肉套餐",
+  "Плов сеті": "抓饭套餐",
+  "Манты сеті": "曼提套餐",
+  "Қайнатпа сорпа (п)": "清汤 (份)",
+  "Плов (п)": "抓饭 (份)",
+  "Манты (шт)": "曼提 (个)",
+  "Самса (шт)": "萨姆萨 (个)",
+  "Нан": "面饼",
+  "Бауырсақ 1 кг": "包尔萨克 1公斤",
+  "Сусын (1 л)": "饮料 (1升)",
+  "Шай": "茶",
+  "Тапсырыс кемінде 1 күн алдын қабылданады. Адам саны, жеткізу уақыты және жалпы сома WhatsApp арқылы нақтыланады.": "订单至少提前 1 天接受。人数、时间和总金额通过 WhatsApp 确认。",
+  "WhatsApp арқылы": "通过 WhatsApp",
+  "Орын таңдау": "选择位置",
+  "кк.аа.жжжж": "日.月.年",
+  "сағ:мин": "时:分",
+  "9 қабат терраса - аренда 20 000 ₸": "9楼露台 - 租金 20 000 ₸",
+  "1 қабат Урбо кофейня - аренда 0 ₸": "1楼 Urbo 咖啡馆 - 租金 0 ₸",
+  "Тапсырыс парағы": "订单表",
+  "әлі жазылмады": "尚未填写",
+  "әлі таңдалмады": "尚未选择",
+  "Телефон соңғы 4 саны": "电话后 4 位",
+  "Сет": "套餐",
+  "Келетін күні": "到店日期",
+  "Келетін сағаты": "到店时间",
+  "Аренда": "租金",
+  "Салаттар": "沙拉",
+  "Сусындар": "饮料",
+  "Толық бағасы": "总价",
+  "Жоғарыдағы тапсырыстарға толықтай келісемін.": "我完全同意以上订单。",
+});
+
+Object.assign(staticTranslationsAll.ky, {
+  "Салат. Хрустящие баклажаны": "Салат. Кытырак баклажан",
+  "Салат. Греческий": "Салат. Грек",
+  "Салат. Цезарь": "Салат. Цезарь",
+  "Аренда. Терраса": "Аренда. Терраса",
+  "Аренда. Урбо": "Аренда. Урбо",
+  "адам басына 1": "адам башына 1",
+  "Самса": "Самса",
+  "1 тарелкада 6 дана": "1 тарелкада 6 даана",
+  "Сусын": "Суусундук",
+  "әр 4 адамға 1 топтама, 3 литр: Coca-Cola, Fanta, Sprite": "ар 4 адамга 1 топтом, 3 литр: Coca-Cola, Fanta, Sprite",
+  "Бауырсақ": "Боорсок",
+  "әр 12 адамға 1 кг": "ар 12 адамга 1 кг",
+  "Салат": "Салат",
+  "әр 2 адамға 1 тарелка": "ар 2 адамга 1 тарелка",
+  "Сет ішіндегі тағамдар": "Сет ичиндеги тамактар",
+  "Сетке тағам қосу": "Сетке тамак кошуу",
+  "Сеттен алынған тағамдар": "Сеттен алынган тамактар",
+  "Салат түрлері": "Салат түрлөрү",
+  "Салат менюі": "Салат менюсу",
+  "Өшірілген салаттар": "Өчүрүлгөн салаттар",
+  "Сусын түрлері": "Суусундук түрлөрү",
+  "Сусын менюі": "Суусундук менюсу",
+  "Өшірілген сусындар": "Өчүрүлгөн суусундуктар",
+  "Қайнатпа сорпа (п)": "Кайнатма шорпо (п)",
+  "Плов (п)": "Палоо (п)",
+  "Манты (шт)": "Манты (даана)",
+  "Самса (шт)": "Самса (даана)",
+  "Нан": "Нан",
+  "Бауырсақ 1 кг": "Боорсок 1 кг",
+  "Сусын (1 л)": "Суусундук (1 л)",
+  "Шай": "Чай",
+  "Тапсырыс кемінде 1 күн алдын қабылданады. Адам саны, жеткізу уақыты және жалпы сома WhatsApp арқылы нақтыланады.": "Буйрутма кеминде 1 күн алдын кабыл алынат. Адам саны, убакыт жана жалпы сумма WhatsApp аркылуу такталат.",
+  "WhatsApp арқылы": "WhatsApp аркылуу",
+  "Орын таңдау": "Жер тандоо",
+  "кк.аа.жжжж": "кк.аа.жжжж",
+  "сағ:мин": "саат:мүн",
+  "9 қабат терраса - аренда 20 000 ₸": "9-кабат терраса - аренда 20 000 ₸",
+  "1 қабат Урбо кофейня - аренда 0 ₸": "1-кабат Урбо кофейня - аренда 0 ₸",
+  "Тапсырыс парағы": "Буйрутма барагы",
+  "әлі жазылмады": "али жазылган жок",
+  "әлі таңдалмады": "али тандалган жок",
+  "Телефон соңғы 4 саны": "Телефондун акыркы 4 саны",
+  "Келетін күні": "Келе турган күнү",
+  "Келетін сағаты": "Келе турган сааты",
+  "Аренда": "Аренда",
+  "Салаттар": "Салаттар",
+  "Сусындар": "Суусундуктар",
+  "Толық бағасы": "Толук баасы",
+  "Жоғарыдағы тапсырыстарға толықтай келісемін.": "Жогорудагы буйрутмаларга толук макулмун.",
+});
+
+Object.assign(staticTranslationsAll.uz, {
+  "Салат. Хрустящие баклажаны": "Salat. Qarsildoq baqlajon",
+  "Салат. Греческий": "Salat. Grekcha",
+  "Салат. Цезарь": "Salat. Sezar",
+  "Аренда. Терраса": "Ijara. Terrasa",
+  "Аренда. Урбо": "Ijara. Urbo",
+  "адам басына 1": "har kishiga 1",
+  "Самса": "Somsa",
+  "1 тарелкада 6 дана": "1 tarelkada 6 dona",
+  "Сусын": "Ichimlik",
+  "әр 4 адамға 1 топтама, 3 литр: Coca-Cola, Fanta, Sprite": "har 4 kishiga 1 to'plam, 3 litr: Coca-Cola, Fanta, Sprite",
+  "Бауырсақ": "Bo'g'irsoq",
+  "әр 12 адамға 1 кг": "har 12 kishiga 1 kg",
+  "Салат": "Salat",
+  "әр 2 адамға 1 тарелка": "har 2 kishiga 1 tarelka",
+  "Сет ішіндегі тағамдар": "Set ichidagi taomlar",
+  "Сетке тағам қосу": "Setga taom qo'shish",
+  "Сеттен алынған тағамдар": "Setdan olingan taomlar",
+  "Салат түрлері": "Salat turlari",
+  "Салат менюі": "Salat menyusi",
+  "Өшірілген салаттар": "O'chirilgan salatlar",
+  "Сусын түрлері": "Ichimlik turlari",
+  "Сусын менюі": "Ichimlik menyusi",
+  "Өшірілген сусындар": "O'chirilgan ichimliklar",
+  "Қайнатпа сорпа (п)": "Qaynatma sho'rva (p)",
+  "Плов (п)": "Palov (p)",
+  "Манты (шт)": "Manti (dona)",
+  "Самса (шт)": "Somsa (dona)",
+  "Нан": "Non",
+  "Бауырсақ 1 кг": "Bo'g'irsoq 1 kg",
+  "Сусын (1 л)": "Ichimlik (1 l)",
+  "Шай": "Choy",
+  "Тапсырыс кемінде 1 күн алдын қабылданады. Адам саны, жеткізу уақыты және жалпы сома WhatsApp арқылы нақтыланады.": "Buyurtma kamida 1 kun oldin qabul qilinadi. Kishi soni, vaqt va umumiy summa WhatsApp orqali aniqlanadi.",
+  "WhatsApp арқылы": "WhatsApp orqali",
+  "Орын таңдау": "Joy tanlash",
+  "кк.аа.жжжж": "kk.oo.yyyy",
+  "сағ:мин": "ss:dd",
+  "9 қабат терраса - аренда 20 000 ₸": "9-qavat terrasa - ijara 20 000 ₸",
+  "1 қабат Урбо кофейня - аренда 0 ₸": "1-qavat Urbo qahvaxonasi - ijara 0 ₸",
+  "Тапсырыс парағы": "Buyurtma varaqasi",
+  "әлі жазылмады": "hali yozilmadi",
+  "әлі таңдалмады": "hali tanlanmadi",
+  "Телефон соңғы 4 саны": "Telefonning oxirgi 4 raqami",
+  "Келетін күні": "Keladigan kuni",
+  "Келетін сағаты": "Keladigan vaqti",
+  "Аренда": "Ijara",
+  "Салаттар": "Salatlar",
+  "Сусындар": "Ichimliklar",
+  "Толық бағасы": "To'liq narxi",
+  "Жоғарыдағы тапсырыстарға толықтай келісемін.": "Yuqoridagi buyurtmalarga to'liq roziman.",
+});
+
+const reverseStaticTranslations = Object.fromEntries(
+  Object.values(staticTranslationsAll).flatMap((items) => Object.entries(items).map(([kk, translated]) => [translated, kk])),
+);
+
+function c(key) {
+  return copy[currentLang][key];
+}
+
+const nameTranslations = {
+  "Қазан-кебап": "Казан-кебаб",
+  "Қайнатпа сорпа": "Суп кайнатпа",
+  "Манты шт": "Манты шт",
+  "Бауырсақ 1 кг": "Баурсаки 1 кг",
+  "Нан": "Лепешка",
+  "Coca-Cola шиша": "Coca-Cola стекло",
+  "Fanta шиша": "Fanta стекло",
+  "Sprite шиша": "Sprite стекло",
+};
+
+const nameTranslationsAll = {
+  ru: nameTranslations,
+  en: {
+    "Қазан-кебап": "Kazan-kebab",
+    "Қайнатпа сорпа": "Kainatma soup",
+    "Манты шт": "Manty pcs",
+    "Бауырсақ 1 кг": "Baursak 1 kg",
+    "Нан": "Bread",
+    "Coca-Cola пластик 1 л": "Coca-Cola plastic 1 l",
+    "Fanta пластик 1 л": "Fanta plastic 1 l",
+    "Sprite пластик 1 л": "Sprite plastic 1 l",
+    "Coca-Cola шиша": "Coca-Cola glass",
+    "Fanta шиша": "Fanta glass",
+    "Sprite шиша": "Sprite glass",
+  },
+  tr: {
+    "Қазан-кебап": "Kazan-kebap",
+    "Қайнатпа сорпа": "Kaynatma çorba",
+    "Манты шт": "Mantı adet",
+    "Бауырсақ 1 кг": "Baursak 1 kg",
+    "Нан": "Ekmek",
+    "Coca-Cola пластик 1 л": "Coca-Cola plastik 1 l",
+    "Fanta пластик 1 л": "Fanta plastik 1 l",
+    "Sprite пластик 1 л": "Sprite plastik 1 l",
+    "Coca-Cola шиша": "Coca-Cola cam",
+    "Fanta шиша": "Fanta cam",
+    "Sprite шиша": "Sprite cam",
+  },
+  zh: {
+    "Қазан-кебап": "锅烤肉",
+    "Қайнатпа сорпа": "清汤",
+    "Манты шт": "曼提 个",
+    "Бауырсақ 1 кг": "包尔萨克 1公斤",
+    "Нан": "面饼",
+    "Coca-Cola пластик 1 л": "Coca-Cola 塑料瓶 1升",
+    "Fanta пластик 1 л": "Fanta 塑料瓶 1升",
+    "Sprite пластик 1 л": "Sprite 塑料瓶 1升",
+    "Coca-Cola шиша": "Coca-Cola 玻璃瓶",
+    "Fanta шиша": "Fanta 玻璃瓶",
+    "Sprite шиша": "Sprite 玻璃瓶",
+  },
+  ky: {
+    "Қазан-кебап": "Казан-кебап",
+    "Қайнатпа сорпа": "Кайнатма шорпо",
+    "Манты шт": "Манты даана",
+    "Бауырсақ 1 кг": "Боорсок 1 кг",
+    "Нан": "Нан",
+    "Coca-Cola пластик 1 л": "Coca-Cola пластик 1 л",
+    "Fanta пластик 1 л": "Fanta пластик 1 л",
+    "Sprite пластик 1 л": "Sprite пластик 1 л",
+    "Coca-Cola шиша": "Coca-Cola шиша",
+    "Fanta шиша": "Fanta шиша",
+    "Sprite шиша": "Sprite шиша",
+  },
+  uz: {
+    "Қазан-кебап": "Qozon-kabob",
+    "Қайнатпа сорпа": "Qaynatma sho'rva",
+    "Манты шт": "Manti dona",
+    "Бауырсақ 1 кг": "Bo'g'irsoq 1 kg",
+    "Нан": "Non",
+    "Coca-Cola пластик 1 л": "Coca-Cola plastik 1 l",
+    "Fanta пластик 1 л": "Fanta plastik 1 l",
+    "Sprite пластик 1 л": "Sprite plastik 1 l",
+    "Coca-Cola шиша": "Coca-Cola shisha",
+    "Fanta шиша": "Fanta shisha",
+    "Sprite шиша": "Sprite shisha",
+  },
+};
+
+const reverseNameTranslations = Object.fromEntries(
+  Object.values(nameTranslationsAll).flatMap((items) => Object.entries(items).map(([kk, translated]) => [translated, kk])),
+);
+
+function translateText(text) {
+  const kkText = reverseStaticTranslations[text] || reverseNameTranslations[text] || text;
+  if (currentLang === "kk") return kkText;
+  return staticTranslationsAll[currentLang]?.[kkText] || nameTranslationsAll[currentLang]?.[kkText] || kkText;
+}
+
+function displayName(name) {
+  const kkName = reverseNameTranslations[name] || name;
+  if (currentLang === "kk") return kkName;
+  return nameTranslationsAll[currentLang]?.[kkName] || kkName;
+}
+
+function setLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem("mugalim-lang", lang);
+  applyLanguage();
+  renderFoods();
+  renderRemovedFoods();
+  renderFoodMenu();
+  renderSalads();
+  renderRemovedSalads();
+  renderSaladMenu();
+  renderDrinks();
+  renderRemovedDrinks();
+  renderDrinkMenu();
+  updateGroupSet();
+}
+
+function applyLanguage() {
+  document.documentElement.lang = currentLang;
+  languageButtons.forEach((button) => {
+    const active = button.dataset.lang === currentLang;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", active.toString());
+  });
+
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  const nodes = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+
+  nodes.forEach((node) => {
+    const value = node.nodeValue;
+    const trimmed = value.trim();
+    if (!trimmed) return;
+    const translated = translateText(trimmed);
+    if (translated !== trimmed) {
+      node.nodeValue = value.replace(trimmed, translated);
+    }
+  });
+
+  document.querySelectorAll("[placeholder], [aria-label], [alt]").forEach((element) => {
+    ["placeholder", "aria-label", "alt"].forEach((attribute) => {
+      const value = element.getAttribute(attribute);
+      if (!value) return;
+      const translated = translateText(value);
+      if (translated !== value) element.setAttribute(attribute, translated);
+    });
+  });
+}
 
 let selectedOrderSet = null;
 let manualSamsaPlates = null;
@@ -86,17 +1260,17 @@ let salads = [
   { id: "caesar", name: "Цезарь", price: 3509, quantity: 2 },
 ];
 const drinkCatalog = [
-  { id: "cola-plastic", name: "Кола пластик 1 л", price: 1000 },
-  { id: "fanta-plastic", name: "Фанта пластик 1 л", price: 1000 },
-  { id: "sprite-plastic", name: "Спрайт пластик 1 л", price: 1000 },
-  { id: "cola-glass", name: "Кола шиша", price: 1000 },
-  { id: "fanta-glass", name: "Фанта шиша", price: 1000 },
-  { id: "sprite-glass", name: "Спрайт шиша", price: 1000 },
+  { id: "cola-plastic", name: "Coca-Cola пластик 1 л", price: 1000 },
+  { id: "fanta-plastic", name: "Fanta пластик 1 л", price: 1000 },
+  { id: "sprite-plastic", name: "Sprite пластик 1 л", price: 1000 },
+  { id: "cola-glass", name: "Coca-Cola шиша", price: 1000 },
+  { id: "fanta-glass", name: "Fanta шиша", price: 1000 },
+  { id: "sprite-glass", name: "Sprite шиша", price: 1000 },
 ];
 let drinks = [
-  { id: "cola-plastic", name: "Кола пластик 1 л", price: 1000, quantity: 1 },
-  { id: "fanta-plastic", name: "Фанта пластик 1 л", price: 1000, quantity: 1 },
-  { id: "sprite-plastic", name: "Спрайт пластик 1 л", price: 1000, quantity: 1 },
+  { id: "cola-plastic", name: "Coca-Cola пластик 1 л", price: 1000, quantity: 1 },
+  { id: "fanta-plastic", name: "Fanta пластик 1 л", price: 1000, quantity: 1 },
+  { id: "sprite-plastic", name: "Sprite пластик 1 л", price: 1000, quantity: 1 },
 ];
 const foodCatalog = [
   { id: "soup-extra", name: "Қайнатпа сорпа", price: 1700 },
@@ -205,7 +1379,7 @@ function syncCustomSelects() {
     const select = document.querySelector(`#${wrapper.dataset.selectId}`);
     const button = wrapper.querySelector(".custom-select-button");
     const selectedOption = select.options[select.selectedIndex];
-    button.textContent = selectedOption ? selectedOption.textContent : "Таңдаңыз";
+    button.textContent = selectedOption ? selectedOption.textContent : c("choose");
 
     wrapper.querySelectorAll(".custom-select-option").forEach((option) => {
       const isSelected = option.dataset.value === select.value;
@@ -229,13 +1403,13 @@ function clampPeople(value) {
 function getVenueDetails() {
   if (orderVenue.value === "urbo") {
     return {
-      name: "1 қабат Урбо кофейня",
+      name: c("urbo"),
       rent: prices.urboRent,
     };
   }
 
   return {
-    name: "9 қабат терраса",
+    name: c("terrace"),
     rent: prices.terraceRent,
   };
 }
@@ -276,19 +1450,19 @@ function updateGroupSet() {
   const actualSaladPlates = manualSaladPlates ?? saladPlates;
   const setRules = {
     kebab: {
-      name: "Қазан-кебап",
-      amount: `${people} порция`,
-      rule: "адам басына 1",
+      name: displayName("Қазан-кебап"),
+      amount: `${people} ${c("portion")}`,
+      rule: c("perPersonOne"),
     },
     plov: {
       name: "Плов",
-      amount: `${people} порция`,
-      rule: "адам басына 1",
+      amount: `${people} ${c("portion")}`,
+      rule: c("perPersonOne"),
     },
     manty: {
       name: "Манты",
-      amount: `${people * 4} дана`,
-      rule: "адам басына 4 дана",
+      amount: `${people * 4} ${c("piece")}`,
+      rule: c("perPersonFour"),
     },
   };
   const main = setRules[selectedSet];
@@ -301,29 +1475,29 @@ function updateGroupSet() {
     saladPlates: actualSaladPlates,
   });
 
-  calcSoup.textContent = `${people} порция`;
+  calcSoup.textContent = `${people} ${c("portion")}`;
   calcMainName.textContent = main.name;
   calcMain.textContent = main.amount;
   calcMainRule.textContent = main.rule;
-  calcSamsa.textContent = `${actualSamsaPlates} тарелка / ${samsaPieces} дана`;
-  calcDrinks.textContent = `${drinkSets} топтама / ${drinkLiters} литр`;
-  calcBaursak.textContent = `${baursakKg} кг`;
-  calcSalad.textContent = `${actualSaladPlates} тарелка`;
+  calcSamsa.textContent = `${actualSamsaPlates} ${c("plate")} / ${samsaPieces} ${c("piece")}`;
+  calcDrinks.textContent = `${drinkSets} ${c("setPack")} / ${drinkLiters} ${c("liter")}`;
+  calcBaursak.textContent = `${baursakKg} ${c("kg")}`;
+  calcSalad.textContent = `${actualSaladPlates} ${c("plate")}`;
   totalKebab.textContent = formatTenge(totals.kebab);
   totalPlov.textContent = formatTenge(totals.plov);
   totalManty.textContent = formatTenge(totals.manty);
-  menuKebabSummary.textContent = `${people} адам · ${formatTenge(totals.kebab)}`;
-  menuPlovSummary.textContent = `${people} адам · ${formatTenge(totals.plov)}`;
-  menuMantySummary.textContent = `${people} адам · ${formatTenge(totals.manty)}`;
+  menuKebabSummary.textContent = `${people} ${c("person")} · ${formatTenge(totals.kebab)}`;
+  menuPlovSummary.textContent = `${people} ${c("person")} · ${formatTenge(totals.plov)}`;
+  menuMantySummary.textContent = `${people} ${c("person")} · ${formatTenge(totals.manty)}`;
   updateRentRows();
   updateOrderBox({ people, totals });
 }
 
 function updateOrderBox({ people, totals }) {
-  const nameText = clientName.value.trim() ? clientName.value.trim() : "әлі жазылмады";
-  const phoneText = clientPhoneLast.value.trim() ? clientPhoneLast.value.trim() : "әлі жазылмады";
-  const dateText = orderDate.value ? orderDate.value : "әлі таңдалмады";
-  const timeText = orderTime.value ? orderTime.value : "әлі таңдалмады";
+  const nameText = clientName.value.trim() ? clientName.value.trim() : c("missingWritten");
+  const phoneText = clientPhoneLast.value.trim() ? clientPhoneLast.value.trim() : c("missingWritten");
+  const dateText = orderDate.value ? orderDate.value : c("missingSelected");
+  const timeText = orderTime.value ? orderTime.value : c("missingSelected");
   const venue = getVenueDetails();
   const rentText = formatTenge(venue.rent);
 
@@ -331,7 +1505,7 @@ function updateOrderBox({ people, totals }) {
     const message = encodeURIComponent(buildWhatsAppOrderText({
       nameText,
       phoneText,
-      setText: "әлі таңдалмады",
+      setText: c("missingSelected"),
       people,
       dateText,
       timeText,
@@ -340,13 +1514,13 @@ function updateOrderBox({ people, totals }) {
       totalText: "0 ₸",
     }));
 
-    chosenName.textContent = "Әлі таңдалмады";
-    chosenPrice.textContent = "Сет таңдаңыз";
+    chosenName.textContent = c("missingSelected").replace(/^./, (letter) => letter.toUpperCase());
+    chosenPrice.textContent = c("noSet");
     whatsappLink.href = `https://wa.me/77787783636?text=${message}`;
     updatePdfSummary({
       nameText,
       phoneText,
-      setText: "әлі таңдалмады",
+      setText: c("missingSelected"),
       people,
       dateText,
       timeText,
@@ -358,7 +1532,7 @@ function updateOrderBox({ people, totals }) {
   }
 
   const setNames = {
-    kebab: "Қазан-кебап",
+    kebab: displayName("Қазан-кебап"),
     plov: "Плов",
     manty: "Манты",
   };
@@ -376,7 +1550,7 @@ function updateOrderBox({ people, totals }) {
   }));
 
   chosenName.textContent = setNames[selectedOrderSet];
-  chosenPrice.textContent = `Толық бағасы: ${total} · Аренда: ${rentText}`;
+  chosenPrice.textContent = `${c("totalPrice")}: ${total} · ${c("rent")}: ${rentText}`;
   whatsappLink.href = `https://wa.me/77787783636?text=${message}`;
   updatePdfSummary({
     nameText,
@@ -392,73 +1566,86 @@ function updateOrderBox({ people, totals }) {
 }
 
 function formatTenge(value) {
-  return `${new Intl.NumberFormat("kk-KZ").format(value)} ₸`;
+  return `${String(Math.round(value)).replace(/\B(?=(\d{3})+(?!\d))/g, " ")} ₸`;
 }
 
-function formatCollectionForPdf(collection, defaultUnit = "дана") {
+function formatCollectionForPdf(collection, defaultUnit = c("piece")) {
   if (!collection.length) return "-";
   return collection
-    .map((item) => `${item.name}: ${item.quantity} ${item.unit || defaultUnit}`)
+    .map((item) => `${displayName(item.name)}: ${item.quantity} ${translateText(item.unit || defaultUnit)}`)
     .join("\n");
 }
 
-function formatChangedCollectionForPdf(collection, baseline, defaultUnit = "дана") {
+function formatChangedCollectionForPdf(collection, baseline, defaultUnit = c("piece")) {
   const changed = collection.filter((item) => baseline[item.id] === undefined || item.quantity !== baseline[item.id]);
-  if (!changed.length) return "өзгеріс жоқ";
+  if (!changed.length) return c("noChange");
 
   return changed
     .map((item) => {
-      const unit = item.unit || defaultUnit;
+      const unit = translateText(item.unit || defaultUnit);
       const baseQuantity = baseline[item.id];
-      if (baseQuantity === undefined) return `${item.name}: ${item.quantity} ${unit}`;
+      if (baseQuantity === undefined) return `${displayName(item.name)}: ${item.quantity} ${unit}`;
       const diff = item.quantity - baseQuantity;
       const sign = diff > 0 ? "+" : "";
-      return `${item.name}: ${item.quantity} ${unit} (${sign}${diff})`;
+      return `${displayName(item.name)}: ${item.quantity} ${unit} (${sign}${diff})`;
     })
     .join("\n");
 }
 
-function formatRemovedCollectionForPdf(collection, defaultUnit = "дана") {
-  if (!collection.length) return "өзгеріс жоқ";
-  return collection.map((item) => `${item.name}: өшірілді`).join("\n");
+function formatRemovedCollectionForPdf(collection, defaultUnit = c("piece")) {
+  if (!collection.length) return c("noChange");
+  return collection.map((item) => `${displayName(item.name)}: ${c("deleted")}`).join("\n");
 }
 
 function formatWhatsAppValue(value) {
-  return value.startsWith("әлі ") ? `_*${value}*_` : value;
+  return isMissingValue(value) ? `_*${value}*_` : value;
+}
+
+function isMissingValue(value) {
+  return [
+    "әлі ",
+    "еще ",
+    "not ",
+    "henüz ",
+    "尚",
+    "ali ",
+    "али ",
+    "hali ",
+  ].some((prefix) => value.startsWith(prefix));
 }
 
 function buildWhatsAppOrderText({ nameText, phoneText, setText, people, dateText, timeText, venue, rentText, totalText }) {
   const section = (title, value) => `${title}:\n${value}`;
 
   return [
-    "Сәлеметсіз бе! Тапсырыс бергім келеді.",
+    c("greeting"),
     "",
     "Mugalim терраса дәмханасы",
-    "Тапсырыс парағы",
+    c("orderSheet"),
     "",
-    `Клиент есімі: ${formatWhatsAppValue(nameText)}`,
-    `Телефон соңғы 4 саны: ${formatWhatsAppValue(phoneText)}`,
-    `Сет: ${formatWhatsAppValue(setText)}`,
-    `Адам саны: ${people} адам`,
-    `Келетін күні: ${formatWhatsAppValue(dateText)}`,
-    `Келетін сағаты: ${formatWhatsAppValue(timeText)}`,
-    `Отыратын орын: ${venue.name}`,
-    `Аренда: ${rentText}`,
+    `${c("clientName")}: ${formatWhatsAppValue(nameText)}`,
+    `${c("phoneLast")}: ${formatWhatsAppValue(phoneText)}`,
+    `${c("set")}: ${formatWhatsAppValue(setText)}`,
+    `${c("peopleCount")}: ${people} ${c("person")}`,
+    `${c("arrivalDate")}: ${formatWhatsAppValue(dateText)}`,
+    `${c("arrivalTime")}: ${formatWhatsAppValue(timeText)}`,
+    `${c("venue")}: ${venue.name}`,
+    `${c("rent")}: ${rentText}`,
     "",
-    section("Сет ішіндегі тағамдар", formatCollectionForPdf(foods)),
-    section("Сетке тағам қосу", formatChangedCollectionForPdf(foods, baselineFoodQuantities)),
-    section("Сеттен алынған тағамдар", formatRemovedCollectionForPdf(removedFoods)),
+    section(c("setFoods"), formatCollectionForPdf(foods)),
+    section(c("addFood"), formatChangedCollectionForPdf(foods, baselineFoodQuantities)),
+    section(c("removedFoods"), formatRemovedCollectionForPdf(removedFoods)),
     "",
-    section("Салаттар", formatCollectionForPdf(salads, "тарелка")),
-    section("Салат менюі", formatChangedCollectionForPdf(salads, baselineSaladQuantities, "тарелка")),
-    section("Өшірілген салаттар", formatRemovedCollectionForPdf(removedSalads, "тарелка")),
+    section(c("salads"), formatCollectionForPdf(salads, c("plate"))),
+    section(c("saladMenu"), formatChangedCollectionForPdf(salads, baselineSaladQuantities, c("plate"))),
+    section(c("removedSalads"), formatRemovedCollectionForPdf(removedSalads, c("plate"))),
     "",
-    section("Сусындар", formatCollectionForPdf(drinks, "шт")),
-    section("Сусын менюі", formatChangedCollectionForPdf(drinks, baselineDrinkQuantities, "шт")),
-    section("Өшірілген сусындар", formatRemovedCollectionForPdf(removedDrinks, "шт")),
+    section(c("drinks"), formatCollectionForPdf(drinks, c("sht"))),
+    section(c("drinkMenu"), formatChangedCollectionForPdf(drinks, baselineDrinkQuantities, c("sht"))),
+    section(c("removedDrinks"), formatRemovedCollectionForPdf(removedDrinks, c("sht"))),
     "",
-    `Толық бағасы: ${totalText}`,
-    "Жоғарыдағы тапсырыстарға толықтай келісемін.",
+    `${c("totalPrice")}: ${totalText}`,
+    c("agreement"),
   ].join("\n");
 }
 
@@ -466,7 +1653,7 @@ function updatePdfSummary({ nameText, phoneText, setText, people, dateText, time
   setPdfValue(pdfClientName, nameText);
   setPdfValue(pdfClientPhone, phoneText);
   setPdfValue(pdfSetName, setText);
-  setPdfValue(pdfPeople, `${people} адам`);
+  setPdfValue(pdfPeople, `${people} ${c("person")}`);
   setPdfValue(pdfDate, dateText);
   setPdfValue(pdfTime, timeText);
   setPdfValue(pdfVenue, venue.name);
@@ -474,29 +1661,29 @@ function updatePdfSummary({ nameText, phoneText, setText, people, dateText, time
   setPdfValue(pdfFoods, formatCollectionForPdf(foods));
   setPdfChangeValue(pdfAddedFoods, formatChangedCollectionForPdf(foods, baselineFoodQuantities));
   setPdfChangeValue(pdfRemovedFoods, formatRemovedCollectionForPdf(removedFoods));
-  setPdfValue(pdfSalads, formatCollectionForPdf(salads, "тарелка"));
-  setPdfChangeValue(pdfChangedSalads, formatChangedCollectionForPdf(salads, baselineSaladQuantities, "тарелка"));
-  setPdfChangeValue(pdfRemovedSalads, formatRemovedCollectionForPdf(removedSalads, "тарелка"));
-  setPdfValue(pdfDrinks, formatCollectionForPdf(drinks, "шт"));
-  setPdfChangeValue(pdfChangedDrinks, formatChangedCollectionForPdf(drinks, baselineDrinkQuantities, "шт"));
-  setPdfChangeValue(pdfRemovedDrinks, formatRemovedCollectionForPdf(removedDrinks, "шт"));
+  setPdfValue(pdfSalads, formatCollectionForPdf(salads, c("plate")));
+  setPdfChangeValue(pdfChangedSalads, formatChangedCollectionForPdf(salads, baselineSaladQuantities, c("plate")));
+  setPdfChangeValue(pdfRemovedSalads, formatRemovedCollectionForPdf(removedSalads, c("plate")));
+  setPdfValue(pdfDrinks, formatCollectionForPdf(drinks, c("sht")));
+  setPdfChangeValue(pdfChangedDrinks, formatChangedCollectionForPdf(drinks, baselineDrinkQuantities, c("sht")));
+  setPdfChangeValue(pdfRemovedDrinks, formatRemovedCollectionForPdf(removedDrinks, c("sht")));
   setPdfValue(pdfTotal, totalText);
 }
 
 function setPdfValue(element, value) {
   element.textContent = value;
-  element.classList.toggle("is-missing", value.startsWith("әлі "));
+  element.classList.toggle("is-missing", isMissingValue(value));
 }
 
 function setPdfChangeValue(element, value) {
   element.textContent = value;
-  element.classList.toggle("is-changed", value !== "өзгеріс жоқ");
+  element.classList.toggle("is-changed", value !== c("noChange"));
 }
 
 function updateRentRows() {
   const venue = getVenueDetails();
   const isTerrace = orderVenue.value !== "urbo";
-  const label = isTerrace ? "Аренда. Терраса" : "Аренда. Урбо";
+  const label = isTerrace ? c("terraceRent") : c("urboRent");
 
   rentRows.forEach((row) => {
     row.classList.toggle("is-highlighted", isTerrace);
@@ -572,19 +1759,19 @@ function getFoodSummary() {
     return baseline === undefined || food.quantity !== baseline;
   });
 
-  if (!changedFoods.length && !removedFoods.length) return "өзгеріс жоқ";
+  if (!changedFoods.length && !removedFoods.length) return c("noChange");
 
   const activeChanges = changedFoods.map((food) => {
     const baseline = baselineFoodQuantities[food.id];
-    const unit = food.unit || "дана";
-    if (baseline === undefined) return `${food.name} - ${food.quantity} ${unit}`;
+    const unit = translateText(food.unit || c("piece"));
+    if (baseline === undefined) return `${displayName(food.name)} - ${food.quantity} ${unit}`;
     const diff = food.quantity - baseline;
     const sign = diff > 0 ? "+" : "";
-    return `${food.name} - ${food.quantity} ${unit} (${sign}${diff})`;
+    return `${displayName(food.name)} - ${food.quantity} ${unit} (${sign}${diff})`;
   });
   const removedChanges = removedFoods
     .filter((food) => baselineFoodQuantities[food.id] !== undefined)
-    .map((food) => `${food.name} - 0 ${food.unit || "дана"} (алынды)`);
+    .map((food) => `${displayName(food.name)} - 0 ${translateText(food.unit || c("piece"))} (${c("removed")})`);
 
   return [...activeChanges, ...removedChanges].join(", ");
 }
@@ -723,7 +1910,7 @@ function renderSalads() {
     info.className = "salad-info";
 
     const name = document.createElement("strong");
-    name.textContent = salad.name;
+    name.textContent = displayName(salad.name);
 
     const price = document.createElement("span");
     price.textContent = formatTenge(salad.price || 0);
@@ -736,7 +1923,7 @@ function renderSalads() {
     const minus = document.createElement("button");
     minus.type = "button";
     minus.textContent = "-";
-    minus.setAttribute("aria-label", `${salad.name} санын азайту`);
+    minus.setAttribute("aria-label", `${displayName(salad.name)} санын азайту`);
     minus.addEventListener("click", () => {
       customSaladIds.add(salads[index].id);
       salads[index].quantity = Math.max(0, salads[index].quantity - 1);
@@ -759,7 +1946,7 @@ function renderSalads() {
     const plus = document.createElement("button");
     plus.type = "button";
     plus.textContent = "+";
-    plus.setAttribute("aria-label", `${salad.name} санын көбейту`);
+    plus.setAttribute("aria-label", `${displayName(salad.name)} санын көбейту`);
     plus.addEventListener("click", () => {
       customSaladIds.add(salads[index].id);
       salads[index].quantity += 1;
@@ -788,7 +1975,7 @@ function renderDrinks() {
     info.className = "salad-info";
 
     const name = document.createElement("strong");
-    name.textContent = drink.name;
+    name.textContent = displayName(drink.name);
 
     const price = document.createElement("span");
     price.textContent = formatTenge(drink.price || 0);
@@ -801,7 +1988,7 @@ function renderDrinks() {
     const minus = document.createElement("button");
     minus.type = "button";
     minus.textContent = "-";
-    minus.setAttribute("aria-label", `${drink.name} санын азайту`);
+    minus.setAttribute("aria-label", `${displayName(drink.name)} санын азайту`);
     minus.addEventListener("click", () => {
       customDrinkIds.add(drinks[index].id);
       drinks[index].quantity = Math.max(0, drinks[index].quantity - 1);
@@ -823,7 +2010,7 @@ function renderDrinks() {
     const plus = document.createElement("button");
     plus.type = "button";
     plus.textContent = "+";
-    plus.setAttribute("aria-label", `${drink.name} санын көбейту`);
+    plus.setAttribute("aria-label", `${displayName(drink.name)} санын көбейту`);
     plus.addEventListener("click", () => {
       customDrinkIds.add(drinks[index].id);
       drinks[index].quantity += 1;
@@ -843,7 +2030,7 @@ function renderRemovedDrinks() {
 
   if (!removedDrinks.length) {
     const empty = document.createElement("li");
-    empty.textContent = "Әзірге жоқ";
+    empty.textContent = c("empty");
     removedDrinkList.append(empty);
     return;
   }
@@ -851,11 +2038,11 @@ function renderRemovedDrinks() {
   removedDrinks.forEach((drink, index) => {
     const item = document.createElement("li");
     const label = document.createElement("span");
-    label.textContent = `${drink.name} (${formatTenge(drink.price || 0)})`;
+    label.textContent = `${displayName(drink.name)} (${formatTenge(drink.price || 0)})`;
 
     const button = document.createElement("button");
     button.type = "button";
-    button.textContent = "Қайта қосу";
+    button.textContent = c("reAdd");
     button.addEventListener("click", () => {
       drinks = [...drinks, drink];
       if (baselineDrinkQuantities[drink.id] === undefined || drink.quantity !== baselineDrinkQuantities[drink.id]) {
@@ -883,7 +2070,7 @@ function renderDrinkMenu() {
   options.forEach((drink) => {
     const option = document.createElement("option");
     option.value = drink.id;
-    option.textContent = `${drink.name} - ${formatTenge(drink.price || 0)}`;
+    option.textContent = `${displayName(drink.name)} - ${formatTenge(drink.price || 0)}`;
     drinkMenu.append(option);
   });
 }
@@ -894,7 +2081,7 @@ function renderFoods() {
 
   if (!foods.length) {
     const empty = document.createElement("li");
-    empty.textContent = "Сет таңдағанда тағамдар осы жерде шығады";
+    empty.textContent = c("foodsEmpty");
     foodList.append(empty);
     return;
   }
@@ -909,10 +2096,10 @@ function renderFoods() {
     info.className = "salad-info";
 
     const name = document.createElement("strong");
-    name.textContent = food.name;
+    name.textContent = displayName(food.name);
 
     const price = document.createElement("span");
-    price.textContent = `${formatTenge(food.price || 0)} / ${food.unit || "дана"}`;
+    price.textContent = `${formatTenge(food.price || 0)} / ${translateText(food.unit || c("piece"))}`;
 
     info.append(name, price);
 
@@ -922,7 +2109,7 @@ function renderFoods() {
     const minus = document.createElement("button");
     minus.type = "button";
     minus.textContent = "-";
-    minus.setAttribute("aria-label", `${food.name} санын азайту`);
+    minus.setAttribute("aria-label", `${displayName(food.name)} санын азайту`);
     minus.addEventListener("click", () => {
       customFoodIds.add(foods[index].id);
       foods[index].quantity = Math.max(0, foods[index].quantity - 1);
@@ -939,12 +2126,12 @@ function renderFoods() {
     });
 
     const quantity = document.createElement("span");
-    quantity.textContent = `${food.quantity} ${food.unit || "дана"}`;
+    quantity.textContent = `${food.quantity} ${translateText(food.unit || c("piece"))}`;
 
     const plus = document.createElement("button");
     plus.type = "button";
     plus.textContent = "+";
-    plus.setAttribute("aria-label", `${food.name} санын көбейту`);
+    plus.setAttribute("aria-label", `${displayName(food.name)} санын көбейту`);
     plus.addEventListener("click", () => {
       customFoodIds.add(foods[index].id);
       foods[index].quantity += 1;
@@ -963,7 +2150,7 @@ function renderRemovedFoods() {
 
   if (!removedFoods.length) {
     const empty = document.createElement("li");
-    empty.textContent = "Әзірге жоқ";
+    empty.textContent = c("empty");
     removedFoodList.append(empty);
     return;
   }
@@ -971,11 +2158,11 @@ function renderRemovedFoods() {
   removedFoods.forEach((food, index) => {
     const item = document.createElement("li");
     const label = document.createElement("span");
-    label.textContent = `${food.name} (${formatTenge(food.price || 0)} / ${food.unit || "дана"})`;
+    label.textContent = `${displayName(food.name)} (${formatTenge(food.price || 0)} / ${translateText(food.unit || c("piece"))})`;
 
     const button = document.createElement("button");
     button.type = "button";
-    button.textContent = "Қайта қосу";
+    button.textContent = c("reAdd");
     button.addEventListener("click", () => {
       foods = [...foods, food];
       if (baselineFoodQuantities[food.id] === undefined || food.quantity !== baselineFoodQuantities[food.id]) {
@@ -1003,7 +2190,7 @@ function renderFoodMenu() {
   options.forEach((food) => {
     const option = document.createElement("option");
     option.value = food.id;
-    option.textContent = `${food.name} - ${formatTenge(food.price || 0)}`;
+    option.textContent = `${displayName(food.name)} - ${formatTenge(food.price || 0)}`;
     foodMenu.append(option);
   });
 }
@@ -1013,7 +2200,7 @@ function renderRemovedSalads() {
 
   if (!removedSalads.length) {
     const empty = document.createElement("li");
-    empty.textContent = "Әзірге жоқ";
+    empty.textContent = c("empty");
     removedSaladList.append(empty);
     return;
   }
@@ -1021,11 +2208,11 @@ function renderRemovedSalads() {
   removedSalads.forEach((salad, index) => {
     const item = document.createElement("li");
     const label = document.createElement("span");
-    label.textContent = `${salad.name} (${formatTenge(salad.price || 0)})`;
+    label.textContent = `${displayName(salad.name)} (${formatTenge(salad.price || 0)})`;
 
     const button = document.createElement("button");
     button.type = "button";
-    button.textContent = "Қайта қосу";
+    button.textContent = c("reAdd");
     button.addEventListener("click", () => {
       salads = [...salads, salad];
       if (baselineSaladQuantities[salad.id] === undefined || salad.quantity !== baselineSaladQuantities[salad.id]) {
@@ -1054,7 +2241,7 @@ function renderSaladMenu() {
   options.forEach((salad) => {
     const option = document.createElement("option");
     option.value = salad.id;
-    option.textContent = `${salad.name} - ${formatTenge(salad.price || 0)}`;
+    option.textContent = `${displayName(salad.name)} - ${formatTenge(salad.price || 0)}`;
     saladMenu.append(option);
   });
 }
@@ -1121,6 +2308,10 @@ peopleCount.addEventListener("input", () => {
 });
 peopleCount.addEventListener("change", updateGroupSet);
 
+languageButtons.forEach((button) => {
+  button.addEventListener("click", () => setLanguage(button.dataset.lang));
+});
+
 document.querySelectorAll("[data-adjust]").forEach((button) => {
   button.addEventListener("click", () => {
     const people = clampPeople(peopleCount.value);
@@ -1153,7 +2344,7 @@ saladForm.addEventListener("submit", (event) => {
 
   const existing = salads.find((salad) => salad.id === selectedSalad.id);
   if (existing) {
-    showSaladNotice("Бұл салат таңдалып қойылған");
+    showSaladNotice(c("saladExists"));
     return;
   }
 
@@ -1177,7 +2368,7 @@ drinkForm.addEventListener("submit", (event) => {
 
   const existing = drinks.find((drink) => drink.id === selectedDrink.id);
   if (existing) {
-    showDrinkNotice("Бұл сусын таңдалып қойылған");
+    showDrinkNotice(c("drinkExists"));
     return;
   }
 
@@ -1200,7 +2391,7 @@ foodForm.addEventListener("submit", (event) => {
 
   const existing = foods.find((food) => food.id === selectedFood.id || food.name === selectedFood.name);
   if (existing) {
-    showFoodNotice("Бұл тағам таңдалып қойылған");
+    showFoodNotice(c("foodExists"));
     return;
   }
 
@@ -1251,6 +2442,7 @@ rememberBaseline(foods, baselineFoodQuantities);
 orderPeople.value = clampPeople(peopleCount.value);
 orderDate.min = getTomorrowDateValue();
 [setType, orderSetSelect].forEach(enhanceSetSelect);
+applyLanguage();
 syncCustomSelects();
 renderSalads();
 renderRemovedSalads();

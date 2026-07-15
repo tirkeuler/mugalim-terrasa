@@ -74,6 +74,12 @@ a.button {
   align-items: center;
 }
 
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 2.4vw, 22px);
+}
+
 .brand {
   gap: 10px;
   font-weight: 750;
@@ -100,6 +106,33 @@ a.button {
 
 .nav a:hover {
   color: var(--brand-dark);
+}
+
+.language-toggle {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 3px;
+  padding: 3px;
+  border: 1px solid rgba(127, 30, 24, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 8px 18px rgba(44, 28, 14, 0.08);
+}
+
+.language-toggle button {
+  min-height: 32px;
+  padding: 0 10px;
+  border-radius: 999px;
+  color: var(--muted);
+  background: transparent;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.language-toggle button.active {
+  color: var(--white);
+  background: var(--brand-dark);
 }
 
 .hero {
@@ -1263,11 +1296,22 @@ h3 {
     max-width: 260px;
   }
 
+  .top-actions {
+    width: 100%;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 10px;
+  }
+
   .nav {
     width: 100%;
     justify-content: space-between;
     gap: 8px;
     font-size: 16px;
+  }
+
+  .language-toggle {
+    align-self: flex-start;
   }
 
   .hero {
