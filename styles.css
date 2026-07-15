@@ -120,7 +120,10 @@ a.button {
   box-shadow: 0 8px 18px rgba(44, 28, 14, 0.08);
 }
 
-.language-toggle button {
+.language-toggle button,
+.language-toggle a {
+  display: inline-grid;
+  place-items: center;
   min-height: 32px;
   padding: 0 10px;
   border-radius: 999px;
@@ -130,7 +133,8 @@ a.button {
   font-weight: 800;
 }
 
-.language-toggle button.active {
+.language-toggle button.active,
+.language-toggle a.active {
   color: var(--white);
   background: var(--brand-dark);
 }

@@ -62,7 +62,7 @@ const menuMantySummary = document.querySelector("#menu-manty-summary");
 const languageButtons = document.querySelectorAll("[data-lang]");
 
 const supportedLanguages = ["kk", "ru", "en", "uz", "tr", "zh", "ky"];
-let currentLang = localStorage.getItem("mugalim-lang") || "kk";
+let currentLang = document.documentElement.lang || localStorage.getItem("mugalim-lang") || "kk";
 if (!supportedLanguages.includes(currentLang)) currentLang = "kk";
 
 const copy = {
